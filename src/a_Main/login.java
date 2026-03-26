@@ -216,7 +216,7 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_passwordActionPerformed
 
     private void login1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_login1MouseClicked
-
+        
     String userEmail = email.getText().trim();
     String userPass = password.getText().trim();
 
@@ -253,29 +253,27 @@ public class login extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Your account is not approved yet. Please contact admin.");
         return;
     }
-session sess = session.getInstance();
-sess.setUserId(user_id);
-sess.setUserName(full_name);
-sess.setUserStatus(status);
-sess.setUserEmail(userEmailDb);
-sess.setUserRole(role);
-sess.setUserContact(num);
-sess.setUserAddress(address);
+        session sess = session.getInstance();
+        sess.setUserId(user_id);
+        sess.setUserName(full_name);
+        sess.setUserStatus(status);
+        sess.setUserEmail(userEmailDb);
+        sess.setUserRole(role);
+        sess.setUserContact(num);
+        sess.setUserAddress(address);
 
     JOptionPane.showMessageDialog(null, "Login Successful!");
 
-    // Role-based dashboard
-if (role.equalsIgnoreCase("admin")) {
-    new admin_dash().setVisible(true);
-} 
-// This will now accept "Staff", "Staff 1", "Staff 2", etc.
-else if (role.toLowerCase().startsWith("staff")) { 
-    new staff_dashboard().setVisible(true);
-} 
-else {
-    JOptionPane.showMessageDialog(null, "Unknown user role: " + role); // Added the role name for debugging
-    return;
-}
+        if (role.equalsIgnoreCase("admin")) {
+            new admin_dash().setVisible(true);
+        } 
+        else if (role.toLowerCase().startsWith("staff")) { 
+            new staff_dashboard().setVisible(true);
+        } 
+        else {
+            JOptionPane.showMessageDialog(null, "Unknown user role: " + role); // Added the role name for debugging
+            return;
+        }
 
     this.dispose();
     
@@ -283,8 +281,8 @@ else {
     }//GEN-LAST:event_login1MouseClicked
 
     private void loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginMouseClicked
-        login logn = new login();
-        logn.setVisible(true);
+        register r = new register();
+        r.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_loginMouseClicked
 

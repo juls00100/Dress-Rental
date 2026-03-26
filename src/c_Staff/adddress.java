@@ -486,7 +486,7 @@ public class adddress extends javax.swing.JFrame {
     }
 
     // Insert into database
-    String sql = "INSERT INTO dress_tbl (dress_name, dress_description, dress_size, dress_price, dress_image, is_available) "
+    String sql = "INSERT INTO tbl_dresses (dress_name, dress_description, dress_size, dress_price, dress_image, is_available) "
                + "VALUES (?, ?, ?, ?, ?, ?)";
 
     try (Connection conn = config.connectDB();

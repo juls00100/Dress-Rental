@@ -21,7 +21,7 @@ public class rentprocess extends javax.swing.JFrame {
     
     public rentprocess() {
         initComponents();
-        displayRentals();
+        //displayRentals();
     }
     
     
@@ -31,8 +31,8 @@ public class rentprocess extends javax.swing.JFrame {
     this.dressName = dressName;
     this.dressPrice = dressPrice;
 
-    jLabel1.setText("Dress: " + dressName);       // display dress name
-    totalamount.setText("Total Price: ₱ " + dressPrice); // default price
+    jLabel1.setText(dressName);       // display dress name
+    totalamount.setText("P " + dressPrice); // default price
 }
 
     /**
@@ -46,7 +46,7 @@ public class rentprocess extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         managepay = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -80,6 +80,8 @@ public class rentprocess extends javax.swing.JFrame {
         CANCEL = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         rental_table = new javax.swing.JTable();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -93,8 +95,8 @@ public class rentprocess extends javax.swing.JFrame {
         jLabel2.setText("Staff Dashboard  ");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, 20));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__6_-removebg-preview.png"))); // NOI18N
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__6_-removebg-preview.png"))); // NOI18N
+        jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
 
         jPanel10.setBackground(new java.awt.Color(255, 235, 239));
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -268,34 +270,45 @@ public class rentprocess extends javax.swing.JFrame {
         jPanel2.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 420));
 
         totalamount.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        totalamount.setText("P");
         totalamount.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel2.add(totalamount, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, 100, 30));
-        jPanel2.add(rentdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 280, 140, 30));
+        jPanel2.add(totalamount, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 320, 100, 30));
 
+        rentdate.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        rentdate.setText("YYYY-MM-DD");
+        jPanel2.add(rentdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 360, 130, 30));
+
+        notes.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         notes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 notesActionPerformed(evt);
             }
         });
-        jPanel2.add(notes, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, 240, 30));
-        jPanel2.add(returndate, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 320, 140, 30));
+        jPanel2.add(notes, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 400, 410, 30));
 
-        jLabel4.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        returndate.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        returndate.setText("YYYY-MM-DD");
+        returndate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returndateActionPerformed(evt);
+            }
+        });
+        jPanel2.add(returndate, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 360, 130, 30));
+
+        jLabel4.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel4.setText("Return date:");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 110, 30));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, 120, 30));
 
-        jLabel13.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel13.setText("Rent date:");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 279, 100, 30));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 100, 30));
 
-        jLabel18.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel18.setText("Note:");
-        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 359, 100, 30));
+        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, 60, 30));
 
-        jLabel21.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel21.setText("Total Price:");
-        jPanel2.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 400, 100, 30));
+        jPanel2.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 100, 30));
 
         CONFIRM.setBackground(new java.awt.Color(46, 139, 8));
         CONFIRM.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -362,7 +375,15 @@ public class rentprocess extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(rental_table);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, 480, 210));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 530, 210));
+
+        jLabel22.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel22.setText("Dress Name:");
+        jPanel2.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 280, 110, 30));
+
+        jLabel1.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel1.setBorder(new javax.swing.border.MatteBorder(null));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 280, 380, 30));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -465,59 +486,64 @@ public class rentprocess extends javax.swing.JFrame {
     }//GEN-LAST:event_notesActionPerformed
 
     private void confirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmMouseClicked
-                                        
-        config conf = new config();
-        session ses = session.getInstance();
+                    
+    config conf = new config();
+    session ses = session.getInstance();
 
-        // Safety check: Ensure the user is logged in
-        if (ses.getUserId() == 0) {
-            JOptionPane.showMessageDialog(null, "Error: No active user session. Please login again.");
-            return;
-        }
+    // 1. Get inputs from your GUI
+    String rDate = rentdate.getText();
+    String retDate = returndate.getText();
+    String userNotes = notes.getText();
 
-        // 1. Get data from your fields
-        String rDate = rentdate.getText();
-        String retDate = returndate.getText();
-        String rNotes = notes.getText();
+    // Basic validation
+    if(rDate.isEmpty() || retDate.isEmpty()){
+        JOptionPane.showMessageDialog(null, "Please enter both Rent and Return dates!");
+        return;
+    }
 
-        if (rDate.isEmpty() || retDate.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please enter both Rent and Return dates.");
-            return;
-        }
+        // 2. Insert the rental record (Matching your DB columns)
+        String sql = "INSERT INTO tbl_rentals (u_id, d_id, r_total, r_date, r_return, r_status, r_notes) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        int result = conf.addRecord(sql, 
+            ses.getUserId(),    // u_id
+            this.dressId,       // d_id
+            this.dressPrice,    // r_total
+            rDate,              // r_date
+            retDate,            // r_return
+            "Pending",          // r_status
+            userNotes           // r_notes
+        );
 
+        if(result == 1){
         try {
-            // 2. The SQL Insert using SQLite-friendly syntax
-            // u_id: User ID, d_id: Dress ID, r_total: Total Price
-            String sql = "INSERT INTO tbl_rentals (u_id, d_id, r_total, r_date, r_status) "
-                       + "VALUES (?, ?, ?, DATE('now'), 'Pending')";
-
-            // 3. Save the record
-            int result = conf.addRecord(sql, 
-                ses.getUserId(), 
-                this.dressId, 
-                this.dressPrice
-            );
-
-            if (result == 1) {
-                // 4. Update dress availability
-                conf.updateRecord("UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = ?", this.dressId);
-
-                JOptionPane.showMessageDialog(null, "Successfully Rented: " + this.dressName);
-                this.dispose(); // Close the window
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
-        } finally {
-            System.out.println("Rental process attempt finished.");
+             // FIXED: Using your actual table name 'tbl_dresses'
+             conf.updateRecord("UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = ?", this.dressId);
+        } catch(Exception e) {
+             // If this still fails for some reason, we print it to console 
+             // but we DON'T let it stop the window from closing!
+             System.out.println("Update failed but continuing: " + e.getMessage());
         }
-
+            
+        // 1. Success Message
+        JOptionPane.showMessageDialog(null, "Successfully Rented: " + this.dressName);
+            
+        // 2. THE DISPOSE (The win for the staring contest!)
+        this.setVisible(false);
+        this.dispose();
+            
+        // 3. RETURN TO DASHBOARD
+        staff_dashboard fff = new staff_dashboard();
+        fff.setVisible(true);
+    }
+    
     }//GEN-LAST:event_confirmMouseClicked
     public void displayRentals() {
         config conf = new config();
         String sql = "SELECT r.r_id AS 'ID', u.u_fname AS 'Staff', d.d_name AS 'Dress', "
                    + "r.r_total AS 'Total', r.r_date AS 'Date', r.r_status AS 'Status' "
                    + "FROM tbl_rentals r "
-                   + "JOIN tbl_user u ON r.u_id = u.u_id "
+                   + "JOIN Users u ON r.u_id = u.u_id "
                    + "JOIN tbl_dresses d ON r.d_id = d.d_id";
 
         try {
@@ -581,6 +607,10 @@ public class rentprocess extends javax.swing.JFrame {
         //logout.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_logoutMouseExited
 
+    private void returndateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returndateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_returndateActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -636,6 +666,7 @@ public class rentprocess extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -644,6 +675,7 @@ public class rentprocess extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel logo;
     private javax.swing.JPanel logout;
     private javax.swing.JPanel managedress;
     private javax.swing.JPanel managepay;

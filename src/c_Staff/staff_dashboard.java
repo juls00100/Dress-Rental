@@ -180,7 +180,7 @@ public class staff_dashboard extends javax.swing.JFrame {
                 jLabel10MouseClicked(evt);
             }
         });
-        managedress.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 140, -1));
+        managedress.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 70, -1));
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/manangedress-removebg-preview.png"))); // NOI18N
         managedress.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
@@ -253,7 +253,7 @@ public class staff_dashboard extends javax.swing.JFrame {
         jLabel23.setText("Rented Dresses");
         jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
-        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 240, 170, 100));
+        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 170, 100));
 
         jPanel8.setBackground(new java.awt.Color(255, 183, 201));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -265,7 +265,7 @@ public class staff_dashboard extends javax.swing.JFrame {
         jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/customers-removebg-preview.png"))); // NOI18N
         jPanel8.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 20, 70, 60));
 
-        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 180, 100));
+        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 180, 100));
 
         jPanel4.setBackground(new java.awt.Color(255, 183, 201));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -277,7 +277,7 @@ public class staff_dashboard extends javax.swing.JFrame {
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/house-removebg-preview.png"))); // NOI18N
         jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 40, 60, 70));
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 240, 160, 100));
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 60, 160, 100));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -336,9 +336,9 @@ public class staff_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_managerentMouseExited
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-       alldress dress = new alldress();
-       dress.setVisible(true);
-       this.dispose();
+       dressMenu dm = new dressMenu();
+        dm.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void managedressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managedressMouseClicked

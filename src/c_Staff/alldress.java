@@ -10,6 +10,7 @@ import a_Main.landingpage;
 import a_Main.login;
 import config.config;
 import config.session;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -29,81 +31,192 @@ import javax.swing.JPanel;
  */
 public class alldress extends javax.swing.JFrame {
 
-    /**
-     * Creates new form alldress
-     */
-    public alldress() {
-        initComponents();
-           dressContainerPanel.setLayout(new java.awt.FlowLayout(
-    FlowLayout.LEFT, 10, 10 // left-align, 10px horizontal & vertical gap
-));
-
-        loadDresses(); 
-          session sess = session.getInstance();
-          
-        
-        
+private String currentMode = "Available";
+public alldress(String mode) {
+    this.currentMode = mode; // Save the mode sent from the menu
+    initComponents();
+    
+    // Change the title based on the mode
+    if(currentMode.equals("Rented")){
+        jLabel2.setText("Rented Dresses List");
+    } else {
+        jLabel2.setText("Available Dresses List");
     }
     
+    session sess = session.getInstance();
+    dressContainerPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 15));
+
+    javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(dressContainerPanel);
+    scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+    scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+    scrollPane.setBorder(null);
+
+    jPanel2.remove(dressContainerPanel); 
+    jPanel2.add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 550, 400)); 
+    
+    jPanel2.revalidate();
+    jPanel2.repaint();
+    
+    loadDresses();
+}
+      
+public alldress() {
+    this("Available");
+    initComponents();
+    
+    
+    session sess = session.getInstance();
+    
+    dressContainerPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 15));
+
+    javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(dressContainerPanel);
+    
+    scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+    scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Makes scrolling smoother
+    scrollPane.setBorder(null); // Recommended for a cleaner, flush look
+
+    jPanel2.remove(dressContainerPanel); // Remove the small static panel
+    jPanel2.add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 550, 400)); 
+    
+    // 3. Refresh the UI so the logo and text stay visible
+    jPanel2.revalidate();
+    jPanel2.repaint();
+    
+    loadDresses();
+}
+    
    private void loadDresses() {
-        dressContainerPanel.removeAll(); 
+        dressContainerPanel.removeAll();  
+        
         config db = new config();
+        int count = 0;
+        
+        String query;
+    if (currentMode.equals("Rented")) {
+        query = "SELECT d.*, r.r_return FROM tbl_dresses d " +
+                "JOIN tbl_rentals r ON d.d_id = r.d_id WHERE d.d_status = 'Rented'";
+    } else {
+        query = "SELECT * FROM tbl_dresses WHERE d_status = 'Available'";
+    }
 
         try {
-            ResultSet rs = db.getData("SELECT * FROM dress_tbl");
-
+                ResultSet rs = db.getData(query);
             while (rs.next()) {
-                // 1. Get the data from the DB
+                count++;
+                String imagePath = rs.getString("d_image"); 
                 String id = rs.getString("d_id");
                 String name = rs.getString("d_name");
                 String price = rs.getString("d_price");
-
-                // 2. Create the Card (The Container)
+                String imgPath = rs.getString("d_image");
+                
                 JPanel card = new JPanel();
-                card.setPreferredSize(new Dimension(200, 250));
-                card.setBackground(new Color(255, 255, 255));
-                card.setLayout(new java.awt.BorderLayout(10, 10)); // Layout to organize items
+                card.setPreferredSize(new Dimension(210, 310)); 
+                card.setBackground(Color.WHITE);
+                card.setLayout(new java.awt.BorderLayout(5, 5));
                 card.setBorder(BorderFactory.createLineBorder(new Color(255, 209, 220), 2));
 
-                // 3. Add the Dress Name (The Label)
-                JLabel nameLabel = new JLabel(name, JLabel.CENTER);
-                nameLabel.setFont(new java.awt.Font("Georgia", 1, 14));
-                card.add(nameLabel, java.awt.BorderLayout.NORTH);
-
-                // 4. Add the Price Label
-                JLabel priceLabel = new JLabel("Price: ₱" + price, JLabel.CENTER);
-                priceLabel.setFont(new java.awt.Font("Georgia", 0, 12));
-                card.add(priceLabel, java.awt.BorderLayout.CENTER);
-
-                // 5. Add the "RENT NOW" Button
+                JLabel imgLabel = new JLabel();
+                imgLabel.setHorizontalAlignment(JLabel.CENTER);
+                
+               // 1. Handle the South Position (Date or Button)
+            if (currentMode.equals("Rented")) {
+                String returnDate = rs.getString("r_return");
+                JLabel dateLabel = new JLabel("Return: " + returnDate, JLabel.CENTER);
+                dateLabel.setFont(new java.awt.Font("Georgia", 3, 14));
+                dateLabel.setForeground(new Color(165, 42, 42));
+                card.add(dateLabel, java.awt.BorderLayout.SOUTH);
+            } else {
                 javax.swing.JButton rentBtn = new javax.swing.JButton("Rent Now");
-                rentBtn.setBackground(new Color(74, 44, 64)); // Your Plum color
+                rentBtn.setBackground(new Color(74, 44, 64));
+                rentBtn.setFont(new java.awt.Font("Georgia", 1, 16));
                 rentBtn.setForeground(Color.WHITE);
 
-                // This is how you "Go to Renting"
                 rentBtn.addActionListener(new ActionListener() {
-                    @Override
                     public void actionPerformed(ActionEvent e) {
-                        // Open the checkout and pass the data
-                        double d_price = Double.parseDouble(price);
-                        rentprocess rp = new rentprocess(id, name, d_price);
-                        rp.setVisible(true);
+                        session sess = session.getInstance();
+                        sess.setDressId(id);
+                        sess.setDressName(name);
+                        sess.setDressPrice(Double.parseDouble(price));
+                        sess.setDressImage(imgPath);
+
+                        dressMenu dm = new dressMenu();
+                        dm.setVisible(true);
+                        alldress.this.dispose(); 
                     }
                 });
                 card.add(rentBtn, java.awt.BorderLayout.SOUTH);
+            }
+                
+                try {
+                    ImageIcon icon = new ImageIcon(imagePath); // Directly load from the path string
+                    Image img = icon.getImage().getScaledInstance(180, 180, Image.SCALE_SMOOTH);
+                    imgLabel.setIcon(new ImageIcon(img));
+                } catch (Exception e) {
+                    imgLabel.setText("Image Error");
+                    System.out.println("Path not found: " + imagePath);
+                }
+                
+                card.add(imgLabel, java.awt.BorderLayout.CENTER);
 
-                // 6. Add the finished card to your main panel
+                JPanel infoPanel = new JPanel(new java.awt.GridLayout(2, 1));
+                infoPanel.setBackground(Color.WHITE);
+
+                JLabel nameLabel = new JLabel(name, JLabel.CENTER);
+                nameLabel.setFont(new java.awt.Font("Georgia", 1, 16));
+
+                JLabel priceLabel = new JLabel("₱" + price, JLabel.CENTER);
+                priceLabel.setForeground(new Color(74, 44, 64)); // Plum color
+
+                card.add(infoPanel, java.awt.BorderLayout.NORTH);
+                infoPanel.add(nameLabel);
+                infoPanel.add(priceLabel);
+                
+
+                javax.swing.JButton rentBtn = new javax.swing.JButton("Rent Now");
+                rentBtn.setBackground(new Color(74, 44, 64));
+                rentBtn.setFont(new java.awt.Font("Georgia", 1, 16));
+                rentBtn.setForeground(Color.WHITE);
+              rentBtn.addActionListener(new ActionListener() {
+                @Override
+                
+    public void actionPerformed(ActionEvent e) {
+                    session sess = session.getInstance();
+
+                    // Save the details to the session
+                    sess.setDressId(id);
+                    sess.setDressName(name);
+                    sess.setDressPrice(Double.parseDouble(price));
+                    sess.setDressImage(imgPath);
+
+                    // Open rentprocess1 using the empty constructor
+                    rentprocess1 rp = new rentprocess1(); 
+                    rp.setVisible(true);
+                    alldress.this.dispose(); 
+                }
+            });
+                
+              //  this.dispose();
+                card.add(rentBtn, java.awt.BorderLayout.SOUTH);
+
                 dressContainerPanel.add(card);
             }
-        } catch (Exception e) {
-            System.out.println("Error loading: " + e.getMessage());
-        }
+            
+            int cardsPerRow = 3;
+            int cardHeight = 310;
+            int rowGap = 15; 
 
-        // CRITICAL: You need these two lines to make the cards appear!
+            int rows = (int) Math.ceil(count / (double)cardsPerRow);
+            int totalCalculatedHeight = (rows * (cardHeight + rowGap)) + 20; // Plus extra safe padding
+            
+            dressContainerPanel.setPreferredSize(new Dimension(680, totalCalculatedHeight));
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
         dressContainerPanel.revalidate();
         dressContainerPanel.repaint();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -153,13 +266,14 @@ public class alldress extends javax.swing.JFrame {
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
 
         dressContainerPanel.setBackground(new java.awt.Color(255, 209, 220));
+        dressContainerPanel.setMaximumSize(new java.awt.Dimension(300, 300));
         dressContainerPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dressContainerPanelMouseClicked(evt);
             }
         });
         dressContainerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel2.add(dressContainerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 550, 200));
+        jPanel2.add(dressContainerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 550, 260));
 
         jPanel10.setBackground(new java.awt.Color(255, 235, 239));
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -191,9 +305,6 @@ public class alldress extends javax.swing.JFrame {
 
         logout.setBackground(new java.awt.Color(165, 42, 42));
         logout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoutMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logoutMouseEntered(evt);
             }
@@ -352,12 +463,6 @@ public class alldress extends javax.swing.JFrame {
         // managepay.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_managepayMouseExited
 
-    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        staff_dashboard land = new staff_dashboard();
-        land.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_logoutMouseClicked
-
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
         // logout.setBackground(new Color (255,255,255));
     }//GEN-LAST:event_logoutMouseEntered
@@ -443,8 +548,8 @@ public class alldress extends javax.swing.JFrame {
     }//GEN-LAST:event_managepay1MouseExited
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        staff_dashboard dash = new staff_dashboard();
-        dash.setVisible(true);
+        dressMenu dm = new dressMenu();
+        dm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
