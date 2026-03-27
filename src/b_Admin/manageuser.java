@@ -22,7 +22,6 @@ public class manageuser extends javax.swing.JFrame {
      */
     public manageuser() {
         initComponents();
-        initComponents();
         
         session sess = session.getInstance();
     }

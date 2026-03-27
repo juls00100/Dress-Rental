@@ -61,159 +61,150 @@ public alldress(String mode) {
     loadDresses();
 }
       
-public alldress() {
-    this("Available");
-    initComponents();
-    
-    
-    session sess = session.getInstance();
-    
-    dressContainerPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 15));
+    public alldress() {
+        this("Available");
+        initComponents();
 
-    javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(dressContainerPanel);
-    
-    scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-    scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Makes scrolling smoother
-    scrollPane.setBorder(null); // Recommended for a cleaner, flush look
 
-    jPanel2.remove(dressContainerPanel); // Remove the small static panel
-    jPanel2.add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 550, 400)); 
-    
-    // 3. Refresh the UI so the logo and text stay visible
-    jPanel2.revalidate();
-    jPanel2.repaint();
-    
-    loadDresses();
-}
-    
-   private void loadDresses() {
-        dressContainerPanel.removeAll();  
-        
-        config db = new config();
-        int count = 0;
-        
-        String query;
-    if (currentMode.equals("Rented")) {
-        query = "SELECT d.*, r.r_return FROM tbl_dresses d " +
-                "JOIN tbl_rentals r ON d.d_id = r.d_id WHERE d.d_status = 'Rented'";
-    } else {
-        query = "SELECT * FROM tbl_dresses WHERE d_status = 'Available'";
+        session sess = session.getInstance();
+
+        dressContainerPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 15));
+
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(dressContainerPanel);
+
+        scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Makes scrolling smoother
+        scrollPane.setBorder(null); // Recommended for a cleaner, flush look
+
+        jPanel2.remove(dressContainerPanel); // Remove the small static panel
+        jPanel2.add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 550, 400)); 
+
+        // 3. Refresh the UI so the logo and text stay visible
+        jPanel2.revalidate();
+        jPanel2.repaint();
+
+        loadDresses();
     }
 
+       private void loadDresses() {
+        dressContainerPanel.removeAll();  
+
+        config db = new config();
+        int count = 0;
+
+        String query;
+        if (currentMode.equals("Rented")) {
+            query = "SELECT d.*, r.r_return, u.full_name, u.number " +
+            "FROM tbl_dresses d " +
+            "JOIN tbl_rentals r ON d.d_id = r.d_id " +
+            "JOIN Users u ON r.u_id = u.user_id " +
+            "WHERE d.d_status = 'Rented'";
+        } else {
+            query = "SELECT * FROM tbl_dresses WHERE d_status = 'Available'";
+        }
+
         try {
-                ResultSet rs = db.getData(query);
+            // FIX 1: Use the 'query' variable instead of a hardcoded string
+            ResultSet rs = db.getData(query);
+
             while (rs.next()) {
                 count++;
-                String imagePath = rs.getString("d_image"); 
                 String id = rs.getString("d_id");
                 String name = rs.getString("d_name");
                 String price = rs.getString("d_price");
-                String imgPath = rs.getString("d_image");
-                
+                String imagePath = rs.getString("d_image");
+
                 JPanel card = new JPanel();
                 card.setPreferredSize(new Dimension(210, 310)); 
                 card.setBackground(Color.WHITE);
                 card.setLayout(new java.awt.BorderLayout(5, 5));
                 card.setBorder(BorderFactory.createLineBorder(new Color(255, 209, 220), 2));
 
+                // Image handling
                 JLabel imgLabel = new JLabel();
                 imgLabel.setHorizontalAlignment(JLabel.CENTER);
-                
-               // 1. Handle the South Position (Date or Button)
-            if (currentMode.equals("Rented")) {
-                String returnDate = rs.getString("r_return");
-                JLabel dateLabel = new JLabel("Return: " + returnDate, JLabel.CENTER);
-                dateLabel.setFont(new java.awt.Font("Georgia", 3, 14));
-                dateLabel.setForeground(new Color(165, 42, 42));
-                card.add(dateLabel, java.awt.BorderLayout.SOUTH);
-            } else {
-                javax.swing.JButton rentBtn = new javax.swing.JButton("Rent Now");
-                rentBtn.setBackground(new Color(74, 44, 64));
-                rentBtn.setFont(new java.awt.Font("Georgia", 1, 16));
-                rentBtn.setForeground(Color.WHITE);
-
-                rentBtn.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        session sess = session.getInstance();
-                        sess.setDressId(id);
-                        sess.setDressName(name);
-                        sess.setDressPrice(Double.parseDouble(price));
-                        sess.setDressImage(imgPath);
-
-                        dressMenu dm = new dressMenu();
-                        dm.setVisible(true);
-                        alldress.this.dispose(); 
-                    }
-                });
-                card.add(rentBtn, java.awt.BorderLayout.SOUTH);
-            }
-                
                 try {
-                    ImageIcon icon = new ImageIcon(imagePath); // Directly load from the path string
+                    ImageIcon icon = new ImageIcon(imagePath);
                     Image img = icon.getImage().getScaledInstance(180, 180, Image.SCALE_SMOOTH);
                     imgLabel.setIcon(new ImageIcon(img));
                 } catch (Exception e) {
-                    imgLabel.setText("Image Error");
-                    System.out.println("Path not found: " + imagePath);
+                    imgLabel.setText("No Image");
                 }
-                
                 card.add(imgLabel, java.awt.BorderLayout.CENTER);
 
+                // Name and Price Panel (North)
                 JPanel infoPanel = new JPanel(new java.awt.GridLayout(2, 1));
                 infoPanel.setBackground(Color.WHITE);
-
                 JLabel nameLabel = new JLabel(name, JLabel.CENTER);
                 nameLabel.setFont(new java.awt.Font("Georgia", 1, 16));
-
                 JLabel priceLabel = new JLabel("₱" + price, JLabel.CENTER);
-                priceLabel.setForeground(new Color(74, 44, 64)); // Plum color
-
-                card.add(infoPanel, java.awt.BorderLayout.NORTH);
+                priceLabel.setForeground(new Color(74, 44, 64));
                 infoPanel.add(nameLabel);
                 infoPanel.add(priceLabel);
-                
+                card.add(infoPanel, java.awt.BorderLayout.NORTH);
 
-                javax.swing.JButton rentBtn = new javax.swing.JButton("Rent Now");
-                rentBtn.setBackground(new Color(74, 44, 64));
-                rentBtn.setFont(new java.awt.Font("Georgia", 1, 16));
-                rentBtn.setForeground(Color.WHITE);
-              rentBtn.addActionListener(new ActionListener() {
-                @Override
-                
-    public void actionPerformed(ActionEvent e) {
-                    session sess = session.getInstance();
+                // FIX 2: Only add the button IF we are in Available mode
+                if (currentMode.equals("Rented")) {
+                    String returnDate = rs.getString("r_return");
+                    String customerName = rs.getString("full_name");
+                    String contact = rs.getString("number");
+                   JPanel rentalInfo = new JPanel(new java.awt.GridLayout(3, 1));
+                    rentalInfo.setBackground(new Color(255, 240, 245)); // Light pink background
 
-                    // Save the details to the session
-                    sess.setDressId(id);
-                    sess.setDressName(name);
-                    sess.setDressPrice(Double.parseDouble(price));
-                    sess.setDressImage(imgPath);
+                    JLabel dateLabel = new JLabel("Return: " + returnDate, JLabel.CENTER);
+                    dateLabel.setFont(new java.awt.Font("Georgia", 3, 12));
+                    dateLabel.setForeground(new Color(165, 42, 42));
 
-                    // Open rentprocess1 using the empty constructor
-                    rentprocess1 rp = new rentprocess1(); 
-                    rp.setVisible(true);
-                    alldress.this.dispose(); 
+                    JLabel custLabel = new JLabel("By: " + customerName, JLabel.CENTER);
+                    custLabel.setFont(new java.awt.Font("Georgia", 1, 12));
+
+                    JLabel contactLabel = new JLabel("Ph: " + contact, JLabel.CENTER);
+                    contactLabel.setFont(new java.awt.Font("Georgia", 0, 11));
+
+                    rentalInfo.add(dateLabel);
+                    rentalInfo.add(custLabel);
+                    rentalInfo.add(contactLabel);
+
+                    card.add(rentalInfo, java.awt.BorderLayout.SOUTH);
+                } else {
+                    javax.swing.JButton rentBtn = new javax.swing.JButton("Rent Now");
+                    rentBtn.setBackground(new Color(74, 44, 64));
+                    rentBtn.setFont(new java.awt.Font("Georgia", 1, 16));
+                    rentBtn.setForeground(Color.WHITE);
+                    rentBtn.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            session sess = session.getInstance();
+                            sess.setDressId(id);
+                            sess.setDressName(name);
+                            sess.setDressPrice(Double.parseDouble(price));
+                            sess.setDressImage(imagePath);
+
+                            rentprocess rp = new rentprocess(); 
+                            rp.setVisible(true);
+                            alldress.this.dispose(); 
+                        }
+                    });
+                    card.add(rentBtn, java.awt.BorderLayout.SOUTH);
                 }
-            });
-                
-              //  this.dispose();
-                card.add(rentBtn, java.awt.BorderLayout.SOUTH);
 
                 dressContainerPanel.add(card);
             }
-            
-            int cardsPerRow = 3;
+
+            // Update panel height for scrolling
+            int cardsPerRow = 2; // Adjusted based on your 550 panel width
             int cardHeight = 310;
             int rowGap = 15; 
-
             int rows = (int) Math.ceil(count / (double)cardsPerRow);
-            int totalCalculatedHeight = (rows * (cardHeight + rowGap)) + 20; // Plus extra safe padding
-            
-            dressContainerPanel.setPreferredSize(new Dimension(680, totalCalculatedHeight));
+            int totalCalculatedHeight = (rows * (cardHeight + rowGap)) + 20;
+
+            dressContainerPanel.setPreferredSize(new Dimension(500, totalCalculatedHeight));
+
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error loading dresses: " + e.getMessage());
         }
+
         dressContainerPanel.revalidate();
         dressContainerPanel.repaint();
     }
@@ -427,8 +418,8 @@ public alldress() {
         });
         managepay1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel8.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel8.setText("Rent");
+        jLabel8.setFont(new java.awt.Font("Georgia", 1, 15)); // NOI18N
+        jLabel8.setText("Manage Rents");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -534,8 +525,8 @@ public alldress() {
     }//GEN-LAST:event_homeMouseExited
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        rentprocess dash = new rentprocess();
-        dash.setVisible(true);
+        rentals r = new rentals();
+        r.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel8MouseClicked
 

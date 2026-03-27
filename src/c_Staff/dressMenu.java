@@ -16,7 +16,6 @@ import java.sql.ResultSet;
  */
 public class dressMenu extends javax.swing.JFrame {
 
-    /** Creates new form dressMenu */
     public dressMenu() {
         initComponents();
         updateCounts();
@@ -24,22 +23,22 @@ public class dressMenu extends javax.swing.JFrame {
     
     public void updateCounts() {
     config db = new config();
-    try {
-        // Query for Available dresses
-        ResultSet rs1 = db.getData("SELECT COUNT(*) FROM tbl_dresses WHERE d_status = 'Available'");
-        if (rs1.next()) {
-            int count = rs1.getInt(1);
-            availableCount.setText(count + "");
-        }
-
-        // Query for Rented dresses
-        ResultSet rs2 = db.getData("SELECT COUNT(*) FROM tbl_dresses WHERE d_status = 'Rented'");
-        if (rs2.next()) {
-            int count = rs2.getInt(1);
-            rentedCount.setText(count + "");
+    String queryAvailable = "SELECT COUNT(*) FROM tbl_dresses WHERE d_status = 'Available'";
+    String queryRented = "SELECT COUNT(*) FROM tbl_dresses WHERE d_status = 'Rented'";
+    
+    try (java.sql.Connection conn = config.connectDB()) {
+        if (conn != null) {
+            try (java.sql.PreparedStatement pst = conn.prepareStatement(queryAvailable);
+                 java.sql.ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) availableCount.setText(rs.getInt(1) + "");
+            }
+            try (java.sql.PreparedStatement pst = conn.prepareStatement(queryRented);
+                 java.sql.ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) rentedCount.setText(rs.getInt(1) + "");
+            }
         }
     } catch (Exception e) {
-        System.out.println("Error updating counts: " + e.getMessage());
+        System.out.println("Count Error: " + e.getMessage());
     }
 }
 
@@ -72,8 +71,8 @@ public class dressMenu extends javax.swing.JFrame {
         dashboard = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         managepay1 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -253,17 +252,17 @@ public class dressMenu extends javax.swing.JFrame {
         });
         managepay1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel8.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel8.setText("Rent");
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jLabel8.setFont(new java.awt.Font("Georgia", 1, 15)); // NOI18N
+        jLabel8.setText("Manage Rents");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
             }
         });
         managepay1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
-        managepay1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
 
         jPanel10.add(managepay1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 150, 40));
 
@@ -411,12 +410,6 @@ public class dressMenu extends javax.swing.JFrame {
         //home.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_homeMouseExited
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        rentprocess dash = new rentprocess();
-        dash.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel8MouseClicked
-
     private void managepay1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay1MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_managepay1MouseEntered
@@ -442,6 +435,12 @@ public class dressMenu extends javax.swing.JFrame {
     rentedList.setVisible(true);
     this.dispose();
     }//GEN-LAST:event_rentedCountMouseClicked
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        rentals r = new rentals();
+        r.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel8MouseClicked
 
     /**
      * @param args the command line arguments

@@ -49,8 +49,8 @@ public class staff_dashboard extends javax.swing.JFrame {
         dashboard = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         managepay1 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
@@ -226,17 +226,17 @@ public class staff_dashboard extends javax.swing.JFrame {
         });
         managepay1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel8.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel8.setText("Rent");
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jLabel8.setFont(new java.awt.Font("Georgia", 1, 15)); // NOI18N
+        jLabel8.setText("Manage Rents");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
             }
         });
         managepay1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
-        managepay1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
 
         jPanel10.add(managepay1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 150, 40));
 
@@ -375,12 +375,6 @@ public class staff_dashboard extends javax.swing.JFrame {
         //home.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_homeMouseExited
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        rentprocess dash = new rentprocess();
-        dash.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel8MouseClicked
-
     private void managepay1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay1MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_managepay1MouseEntered
@@ -388,6 +382,12 @@ public class staff_dashboard extends javax.swing.JFrame {
     private void managepay1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay1MouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_managepay1MouseExited
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        rentals r = new rentals();
+        r.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel8MouseClicked
 
     /**
      * @param args the command line arguments

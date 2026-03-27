@@ -390,9 +390,9 @@
                 <Component class="javax.swing.JLabel" name="jLabel8">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Georgia" size="16" style="1"/>
+                      <Font name="Georgia" size="15" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Rent"/>
+                    <Property name="text" type="java.lang.String" value="Manage Rents"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel8MouseClicked"/>

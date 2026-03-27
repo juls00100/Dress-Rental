@@ -7,7 +7,10 @@ package c_Staff;
 
 import config.config;
 import config.session;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -18,23 +21,27 @@ public class rentprocess extends javax.swing.JFrame {
     private String dressId;
     private String dressName;
     private double dressPrice;
+    private int userId;
     
     public rentprocess() {
         initComponents();
-        //displayRentals();
+         session sess = session.getInstance();
+    this.dressId = sess.getDressId();
+    this.dressName = sess.getDressName();
+    this.dressPrice = sess.getDressPrice();
+    String pathFromSession = sess.getDressImage();
+
+    // Update your labels
+    jLabel1.setText(dressName);       
+    totalamount.setText("P" + dressPrice);
+    
+    if (pathFromSession != null) {
+        ImageIcon ii = new ImageIcon(pathFromSession);
+        Image scaledImg = ii.getImage().getScaledInstance(dress_image.getWidth(), dress_image.getHeight(), Image.SCALE_SMOOTH);
+        dress_image.setIcon(new ImageIcon(scaledImg));
+    }
     }
     
-    
-    public rentprocess(String dressId, String dressName, double dressPrice) {
-    initComponents();
-    this.dressId = dressId;
-    this.dressName = dressName;
-    this.dressPrice = dressPrice;
-
-    jLabel1.setText(dressName);       // display dress name
-    totalamount.setText("P " + dressPrice); // default price
-}
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,9 +51,6 @@ public class rentprocess extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        logo = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         managepay = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -61,42 +65,58 @@ public class rentprocess extends javax.swing.JFrame {
         dashboard = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         managepay1 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         logout = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        totalamount = new javax.swing.JLabel();
-        rentdate = new javax.swing.JTextField();
-        notes = new javax.swing.JTextField();
-        returndate = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        ehh = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        managepay2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
+        logout1 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        CONFIRM = new javax.swing.JPanel();
-        confirm = new javax.swing.JLabel();
-        cancel = new javax.swing.JPanel();
-        CANCEL = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        rental_table = new javax.swing.JTable();
+        managerent1 = new javax.swing.JPanel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        managedress1 = new javax.swing.JPanel();
+        dress = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
+        home1 = new javax.swing.JPanel();
+        dashboard1 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        managepay3 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        totalamount = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        notes = new javax.swing.JTextField();
+        logout2 = new javax.swing.JPanel();
+        confirm = new javax.swing.JLabel();
+        logout3 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        dress_image = new javax.swing.JLabel();
+        rentDateChooser = new com.toedter.calendar.JDateChooser();
+        returnDateChooser = new com.toedter.calendar.JDateChooser();
+        jLabel30 = new javax.swing.JLabel();
+        txt_custContact = new javax.swing.JTextField();
+        jLabel32 = new javax.swing.JLabel();
+        txt_custName = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 209, 220));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel2.setBackground(new java.awt.Color(255, 209, 220));
-        jPanel2.setPreferredSize(new java.awt.Dimension(360, 480));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 51, 153));
-        jLabel2.setText("Staff Dashboard  ");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, 20));
-
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__6_-removebg-preview.png"))); // NOI18N
-        jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
 
         jPanel10.setBackground(new java.awt.Color(255, 235, 239));
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -224,17 +244,17 @@ public class rentprocess extends javax.swing.JFrame {
         });
         managepay1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel8.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel8.setText("Rent");
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jLabel8.setFont(new java.awt.Font("Georgia", 1, 15)); // NOI18N
+        jLabel8.setText("Manage Rents");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
             }
         });
         managepay1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
-        managepay1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
 
         jPanel10.add(managepay1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 160, 40));
 
@@ -267,123 +287,316 @@ public class rentprocess extends javax.swing.JFrame {
 
         jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
 
-        jPanel2.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 420));
+        getContentPane().add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 420));
+
+        jLabel2.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 51, 153));
+        jLabel2.setText("Staff Dashboard  ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, 20));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__6_-removebg-preview.png"))); // NOI18N
+        getContentPane().add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
+
+        jPanel2.setBackground(new java.awt.Color(255, 209, 220));
+        jPanel2.setPreferredSize(new java.awt.Dimension(360, 480));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 51, 153));
+        jLabel3.setText("Staff Dashboard  ");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, 20));
+
+        ehh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__6_-removebg-preview.png"))); // NOI18N
+        jPanel2.add(ehh, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
+
+        jPanel11.setBackground(new java.awt.Color(255, 235, 239));
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        managepay2.setBackground(new java.awt.Color(255, 183, 201));
+        managepay2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managepay2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managepay2MouseExited(evt);
+            }
+        });
+        managepay2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel9.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel9.setText("Profile");
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel9MouseClicked(evt);
+            }
+        });
+        managepay2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel11.add(managepay2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 150, 40));
+
+        logout1.setBackground(new java.awt.Color(165, 42, 42));
+        logout1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logout1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logout1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logout1MouseExited(evt);
+            }
+        });
+        logout1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel11.setText("Back");
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
+        logout1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
+
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
+        logout1.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel11.add(logout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
+
+        managerent1.setBackground(new java.awt.Color(255, 183, 201));
+        managerent1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                managerent1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managerent1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managerent1MouseExited(evt);
+            }
+        });
+        managerent1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel35.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel35.setText("Customers");
+        jLabel35.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel35MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel35MouseEntered(evt);
+            }
+        });
+        managerent1.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
+        managerent1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel11.add(managerent1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
+
+        managedress1.setBackground(new java.awt.Color(255, 209, 220));
+        managedress1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                managedress1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managedress1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managedress1MouseExited(evt);
+            }
+        });
+        managedress1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dress.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        dress.setText("Dress");
+        dress.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dressMouseClicked(evt);
+            }
+        });
+        managedress1.add(dress, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 60, -1));
+
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/manangedress-removebg-preview.png"))); // NOI18N
+        managedress1.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel11.add(managedress1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 160, 40));
+
+        home1.setBackground(new java.awt.Color(255, 183, 201));
+        home1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                home1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                home1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                home1MouseExited(evt);
+            }
+        });
+        home1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dashboard1.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        dashboard1.setText("Dashboard");
+        dashboard1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashboard1MouseClicked(evt);
+            }
+        });
+        home1.add(dashboard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 100, 40));
+
+        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home-removebg-preview.png"))); // NOI18N
+        home1.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel11.add(home1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 150, 40));
+
+        managepay3.setBackground(new java.awt.Color(255, 183, 201));
+        managepay3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managepay3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managepay3MouseExited(evt);
+            }
+        });
+        managepay3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel24.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel24.setText("Rent");
+        jLabel24.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel24MouseClicked(evt);
+            }
+        });
+        managepay3.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jLabel25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay3.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel11.add(managepay3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 150, 40));
+
+        jPanel2.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 420));
+
+        jLabel26.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel26.setText("Contact:");
+        jPanel2.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 90, 30));
+
+        jLabel1.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel1.setBorder(new javax.swing.border.MatteBorder(null));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 290, 170, 30));
+
+        jLabel27.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel27.setText("Total Price:");
+        jPanel2.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 290, 100, 30));
 
         totalamount.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         totalamount.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel2.add(totalamount, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 320, 100, 30));
+        jPanel2.add(totalamount, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 290, 150, 30));
 
-        rentdate.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        rentdate.setText("YYYY-MM-DD");
-        jPanel2.add(rentdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 360, 130, 30));
+        jLabel28.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel28.setText("Rent date:");
+        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 330, 100, 30));
 
-        notes.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel5.setText("Return date:");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 330, 120, 30));
+
+        jLabel29.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel29.setText("Note:");
+        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 370, 60, 30));
+
+        notes.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
         notes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 notesActionPerformed(evt);
             }
         });
-        jPanel2.add(notes, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 400, 410, 30));
+        jPanel2.add(notes, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 370, 410, 30));
 
-        returndate.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        returndate.setText("YYYY-MM-DD");
-        returndate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                returndateActionPerformed(evt);
-            }
-        });
-        jPanel2.add(returndate, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 360, 130, 30));
-
-        jLabel4.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        jLabel4.setText("Return date:");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, 120, 30));
-
-        jLabel13.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        jLabel13.setText("Rent date:");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 100, 30));
-
-        jLabel18.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        jLabel18.setText("Note:");
-        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, 60, 30));
-
-        jLabel21.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        jLabel21.setText("Total Price:");
-        jPanel2.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 100, 30));
-
-        CONFIRM.setBackground(new java.awt.Color(46, 139, 8));
-        CONFIRM.addMouseListener(new java.awt.event.MouseAdapter() {
+        logout2.setBackground(new java.awt.Color(46, 139, 8));
+        logout2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CONFIRMMouseClicked(evt);
+                logout2MouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                CONFIRMMouseEntered(evt);
+                logout2MouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                CONFIRMMouseExited(evt);
+                logout2MouseExited(evt);
             }
         });
-        CONFIRM.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        logout2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         confirm.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         confirm.setForeground(new java.awt.Color(240, 240, 240));
         confirm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        confirm.setText("Confirm");
+        confirm.setText("CONFIRM");
         confirm.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 confirmMouseClicked(evt);
             }
         });
-        CONFIRM.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 130, 30));
+        logout2.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 9, 110, 20));
 
-        jPanel2.add(CONFIRM, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 440, 130, 30));
+        jPanel2.add(logout2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 410, 120, 40));
 
-        cancel.setBackground(new java.awt.Color(165, 42, 42));
-        cancel.addMouseListener(new java.awt.event.MouseAdapter() {
+        logout3.setBackground(new java.awt.Color(165, 42, 42));
+        logout3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cancelMouseClicked(evt);
+                logout3MouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                cancelMouseEntered(evt);
+                logout3MouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                cancelMouseExited(evt);
+                logout3MouseExited(evt);
             }
         });
-        cancel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        logout3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        CANCEL.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        CANCEL.setForeground(new java.awt.Color(240, 240, 240));
-        CANCEL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CANCEL.setText("Cancel");
-        CANCEL.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel31.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel31.setText("Cancel");
+        jLabel31.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CANCELMouseClicked(evt);
+                jLabel31MouseClicked(evt);
             }
         });
-        cancel.add(CANCEL, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 130, 30));
+        logout3.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 9, 80, 20));
 
-        jPanel2.add(cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 440, 130, 30));
+        jPanel2.add(logout3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 130, 40));
+        jPanel2.add(dress_image, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 230, 160));
 
-        rental_table.setBackground(new java.awt.Color(255, 204, 255));
-        rental_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        rentDateChooser.setDateFormatString("yyyy-MM-dd");
+        jPanel2.add(rentDateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 330, 150, -1));
+        jPanel2.add(returnDateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 330, 150, -1));
 
-            },
-            new String [] {
+        jLabel30.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel30.setText("Dress Name:");
+        jPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, 110, 30));
 
+        txt_custContact.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
+        txt_custContact.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_custContactActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(rental_table);
+        });
+        jPanel2.add(txt_custContact, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 250, 150, 30));
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 530, 210));
+        jLabel32.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
+        jLabel32.setText("Customer:");
+        jPanel2.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 100, 30));
 
-        jLabel22.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        jLabel22.setText("Dress Name:");
-        jPanel2.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 280, 110, 30));
-
-        jLabel1.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel1.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 280, 380, 30));
+        txt_custName.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
+        txt_custName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_custNameActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txt_custName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 170, 30));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -467,12 +680,6 @@ public class rentprocess extends javax.swing.JFrame {
         //home.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_homeMouseExited
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        rentprocess dash = new rentprocess();
-        dash.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel8MouseClicked
-
     private void managepay1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay1MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_managepay1MouseEntered
@@ -480,112 +687,6 @@ public class rentprocess extends javax.swing.JFrame {
     private void managepay1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay1MouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_managepay1MouseExited
-
-    private void notesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_notesActionPerformed
-
-    private void confirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmMouseClicked
-                    
-    config conf = new config();
-    session ses = session.getInstance();
-
-    // 1. Get inputs from your GUI
-    String rDate = rentdate.getText();
-    String retDate = returndate.getText();
-    String userNotes = notes.getText();
-
-    // Basic validation
-    if(rDate.isEmpty() || retDate.isEmpty()){
-        JOptionPane.showMessageDialog(null, "Please enter both Rent and Return dates!");
-        return;
-    }
-
-        // 2. Insert the rental record (Matching your DB columns)
-        String sql = "INSERT INTO tbl_rentals (u_id, d_id, r_total, r_date, r_return, r_status, r_notes) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        
-        int result = conf.addRecord(sql, 
-            ses.getUserId(),    // u_id
-            this.dressId,       // d_id
-            this.dressPrice,    // r_total
-            rDate,              // r_date
-            retDate,            // r_return
-            "Pending",          // r_status
-            userNotes           // r_notes
-        );
-
-        if(result == 1){
-        try {
-             // FIXED: Using your actual table name 'tbl_dresses'
-             conf.updateRecord("UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = ?", this.dressId);
-        } catch(Exception e) {
-             // If this still fails for some reason, we print it to console 
-             // but we DON'T let it stop the window from closing!
-             System.out.println("Update failed but continuing: " + e.getMessage());
-        }
-            
-        // 1. Success Message
-        JOptionPane.showMessageDialog(null, "Successfully Rented: " + this.dressName);
-            
-        // 2. THE DISPOSE (The win for the staring contest!)
-        this.setVisible(false);
-        this.dispose();
-            
-        // 3. RETURN TO DASHBOARD
-        staff_dashboard fff = new staff_dashboard();
-        fff.setVisible(true);
-    }
-    
-    }//GEN-LAST:event_confirmMouseClicked
-    public void displayRentals() {
-        config conf = new config();
-        String sql = "SELECT r.r_id AS 'ID', u.u_fname AS 'Staff', d.d_name AS 'Dress', "
-                   + "r.r_total AS 'Total', r.r_date AS 'Date', r.r_status AS 'Status' "
-                   + "FROM tbl_rentals r "
-                   + "JOIN Users u ON r.u_id = u.u_id "
-                   + "JOIN tbl_dresses d ON r.d_id = d.d_id";
-
-        try {
-            // Calling the viewTable method from your config
-            conf.viewTable(sql, rental_table); 
-        } catch (Exception e) {
-            System.out.println("Table Loading Error: " + e.getMessage());
-        } finally {
-            // Forces a UI refresh to make sure the data appears
-            rental_table.revalidate();
-            rental_table.repaint();
-        }
-    }
-    private void CONFIRMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CONFIRMMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CONFIRMMouseClicked
-
-    private void CONFIRMMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CONFIRMMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CONFIRMMouseEntered
-
-    private void CONFIRMMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CONFIRMMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CONFIRMMouseExited
-
-    private void CANCELMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CANCELMouseClicked
-        staff_dashboard land = new staff_dashboard();
-        land.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_CANCELMouseClicked
-
-    private void cancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelMouseClicked
-
-    private void cancelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelMouseEntered
-
-    private void cancelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelMouseExited
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         staff_dashboard dash = new staff_dashboard();
@@ -607,9 +708,193 @@ public class rentprocess extends javax.swing.JFrame {
         //logout.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_logoutMouseExited
 
-    private void returndateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returndateActionPerformed
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        userprofile pay = new userprofile();
+        pay.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel9MouseClicked
+
+    private void managepay2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay2MouseEntered
+        // managepay.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_managepay2MouseEntered
+
+    private void managepay2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay2MouseExited
+        // managepay.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_managepay2MouseExited
+
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
+        dressMenu dm = new dressMenu();
+        dm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel11MouseClicked
+
+    private void logout1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseClicked
+        staff_dashboard land = new staff_dashboard();
+        land.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_logout1MouseClicked
+
+    private void logout1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseEntered
+        // logout.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_logout1MouseEntered
+
+    private void logout1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseExited
+        //logout.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_logout1MouseExited
+
+    private void jLabel35MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel35MouseClicked
+
+    }//GEN-LAST:event_jLabel35MouseClicked
+
+    private void jLabel35MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel35MouseEntered
+
+    }//GEN-LAST:event_jLabel35MouseEntered
+
+    private void managerent1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerent1MouseClicked
+        //transtable table = new transtable();
+        // table.setVisible(true);
+        //this.dispose();
+    }//GEN-LAST:event_managerent1MouseClicked
+
+    private void managerent1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerent1MouseEntered
+        //managerent.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_managerent1MouseEntered
+
+    private void managerent1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerent1MouseExited
+        // managerent.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_managerent1MouseExited
+
+    private void dressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dressMouseClicked
+        dressMenu dm = new dressMenu();
+        dm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_dressMouseClicked
+
+    private void managedress1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managedress1MouseClicked
+        //adddress dress = new adddress();
+        //dress.setVisible(true);
+        //this.dispose();
+    }//GEN-LAST:event_managedress1MouseClicked
+
+    private void managedress1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managedress1MouseEntered
+        //managedress.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_managedress1MouseEntered
+
+    private void managedress1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managedress1MouseExited
+        // managedress.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_managedress1MouseExited
+
+    private void dashboard1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboard1MouseClicked
+        staff_dashboard dash = new staff_dashboard();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_dashboard1MouseClicked
+
+    private void home1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseClicked
+        staff_dashboard dash = new staff_dashboard();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_home1MouseClicked
+
+    private void home1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseEntered
+        //  home.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_home1MouseEntered
+
+    private void home1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_home1MouseExited
+        //home.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_home1MouseExited
+
+    private void jLabel24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel24MouseClicked
+        rentprocess dash = new rentprocess();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel24MouseClicked
+
+    private void managepay3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay3MouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_returndateActionPerformed
+    }//GEN-LAST:event_managepay3MouseEntered
+
+    private void managepay3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay3MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_managepay3MouseExited
+
+    private void notesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_notesActionPerformed
+
+    private void confirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmMouseClicked
+                                                                           
+    config conf = new config();
+    session sess = session.getInstance();
+    
+    int staffId = sess.getUserId();
+    String customerName = txt_custName.getText().trim();
+    String customerPhone = txt_custContact.getText().trim();
+    String userNotes = notes.getText().trim();
+
+    if (rentDateChooser.getDate() == null || returnDateChooser.getDate() == null || customerName.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please fill in all details and select dates!");
+        return;
+    }
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String rDate = sdf.format(rentDateChooser.getDate());
+    String retDate = sdf.format(returnDateChooser.getDate());
+
+    boolean success = conf.executeRentalTransaction(this.dressId, staffId, this.dressPrice, rDate, retDate, userNotes, customerName, customerPhone);
+
+    if (success) {
+        JOptionPane.showMessageDialog(null, "Booking Successful!");
+        this.dispose();
+        new staff_dashboard().setVisible(true);
+    } else {
+        JOptionPane.showMessageDialog(null, "Error: Dress is unavailable or Database is busy. Please try again.");
+    }
+    }//GEN-LAST:event_confirmMouseClicked
+
+    private void logout2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseClicked
+
+    private void logout2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseEntered
+
+    private void logout2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseExited
+
+    private void jLabel31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel31MouseClicked
+        dressMenu dm = new dressMenu();
+        dm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel31MouseClicked
+
+    private void logout3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout3MouseClicked
+
+    private void logout3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout3MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout3MouseEntered
+
+    private void logout3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout3MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout3MouseExited
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        rentals r = new rentals();
+        r.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void txt_custContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_custContactActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_custContactActionPerformed
+
+    private void txt_custNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_custNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_custNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -648,14 +933,17 @@ public class rentprocess extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CANCEL;
-    private javax.swing.JPanel CONFIRM;
-    private javax.swing.JPanel cancel;
     private javax.swing.JLabel confirm;
     private javax.swing.JLabel dashboard;
+    private javax.swing.JLabel dashboard1;
+    private javax.swing.JLabel dress;
+    private javax.swing.JLabel dress_image;
+    private javax.swing.JLabel ehh;
     private javax.swing.JPanel home;
+    private javax.swing.JPanel home1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -667,24 +955,45 @@ public class rentprocess extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel logout;
+    private javax.swing.JPanel logout1;
+    private javax.swing.JPanel logout2;
+    private javax.swing.JPanel logout3;
     private javax.swing.JPanel managedress;
+    private javax.swing.JPanel managedress1;
     private javax.swing.JPanel managepay;
     private javax.swing.JPanel managepay1;
+    private javax.swing.JPanel managepay2;
+    private javax.swing.JPanel managepay3;
     private javax.swing.JPanel managerent;
+    private javax.swing.JPanel managerent1;
     private javax.swing.JTextField notes;
-    private javax.swing.JTable rental_table;
-    private javax.swing.JTextField rentdate;
-    private javax.swing.JTextField returndate;
+    private com.toedter.calendar.JDateChooser rentDateChooser;
+    private com.toedter.calendar.JDateChooser returnDateChooser;
     private javax.swing.JLabel totalamount;
+    private javax.swing.JTextField txt_custContact;
+    private javax.swing.JTextField txt_custName;
     // End of variables declaration//GEN-END:variables
 }

@@ -128,17 +128,15 @@ public static Connection connectDB() {
         }
     }
      
-// Add this method in the config class
 public void deleteRecord(String sql, Object... values) {
     try (Connection conn = this.connectDB();
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-        // Loop through the values and set them in the prepared statement dynamically
         for (int i = 0; i < values.length; i++) {
             if (values[i] instanceof Integer) {
-                pstmt.setInt(i + 1, (Integer) values[i]); // If the value is Integer
+                pstmt.setInt(i + 1, (Integer) values[i]);
             } else {
-                pstmt.setString(i + 1, values[i].toString()); // Default to String for other types
+                pstmt.setString(i + 1, values[i].toString()); 
             }
         }
 
@@ -195,7 +193,6 @@ public java.util.List<java.util.Map<String, Object>> fetchRecords(String sqlQuer
          PreparedStatement pstmt = conn.prepareStatement(sql);
          ResultSet rs = pstmt.executeQuery()) {
         
-        // This line automatically maps the Resultset to your JTable
         table.setModel(DbUtils.resultSetToTableModel(rs));
         
     } catch (SQLException e) {
@@ -204,13 +201,11 @@ public java.util.List<java.util.Map<String, Object>> fetchRecords(String sqlQuer
 }
     
 
-// Method to hash passwords using SHA-256
 public static String hashPassword(String password) {
     try {
         java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
         byte[] hashedBytes = md.digest(password.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         
-        // Convert byte array to hex string
         StringBuilder hexString = new StringBuilder();
         for (byte b : hashedBytes) {
             String hex = Integer.toHexString(0xff & b);
@@ -225,19 +220,16 @@ public static String hashPassword(String password) {
 }
 
    public boolean updateData(String sql) {
-    // Map this to your proper updateRecord method
     updateRecord(sql);
     return true; 
 }
 
 public boolean deleteData(String sql) {
-    // Map this to your proper deleteRecord method
     deleteRecord(sql);
     return true;
 }
 
 public boolean insertData(String sql) {
-    // Map this to your proper addRecord method
     addRecord(sql);
     return true;
 }
@@ -282,7 +274,6 @@ public static class session {
         return instance;
     }
 
-    // Standard Getters and Setters
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
 
@@ -292,21 +283,19 @@ public static class session {
     public String getUserRole() { return userRole; }
     public void setUserRole(String userRole) { this.userRole = userRole; }
     
-    // Add other setters/getters for Email and Status as needed
     }    
     public void viewTable(String sql, JTable table) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = connectDB(); // Get connection
+            conn = connectDB(); 
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
             table.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         } finally {
-            // CRITICAL: Close everything in reverse order to prevent DB LOCK
             try {
                 if (rs != null) rs.close();
                 if (pstmt != null) pstmt.close();
@@ -317,4 +306,55 @@ public static class session {
             }
         }
     }
+    
+    public boolean executeRentalTransaction(String d_id, int u_id, double price, String rDate, String retDate, String notes, String cName, String cPhone) {
+    String checkQuery = "SELECT COUNT(*) FROM tbl_rentals WHERE d_id = ? AND ((? BETWEEN r_date AND r_return) OR (? BETWEEN r_date AND r_return) OR (r_date BETWEEN ? AND ?))";
+    String insertSql = "INSERT INTO tbl_rentals (u_id, d_id, r_total, r_date, r_return, r_status, r_notes, r_cust_name, r_cust_contact) VALUES (?, ?, ?, ?, ?, 'Pending', ?, ?, ?)";
+    String updateSql = "UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = ?";
+
+    try (Connection conn = config.connectDB()) {
+        if (conn == null) return false;
+        conn.setAutoCommit(false); 
+
+        try (PreparedStatement pstmtCheck = conn.prepareStatement(checkQuery);
+             PreparedStatement pstmtInsert = conn.prepareStatement(insertSql);
+             PreparedStatement pstmtUpdate = conn.prepareStatement(updateSql)) {
+
+            pstmtCheck.setString(1, d_id);
+            pstmtCheck.setString(2, rDate);
+            pstmtCheck.setString(3, retDate);
+            pstmtCheck.setString(4, rDate);
+            pstmtCheck.setString(5, retDate);
+            try (ResultSet rs = pstmtCheck.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    conn.rollback();
+                    return false; 
+                }
+            }
+
+            pstmtInsert.setInt(1, u_id);
+            pstmtInsert.setString(2, d_id);
+            pstmtInsert.setDouble(3, price);
+            pstmtInsert.setString(4, rDate);
+            pstmtInsert.setString(5, retDate);
+            pstmtInsert.setString(6, notes);
+            pstmtInsert.setString(7, cName);
+            pstmtInsert.setString(8, cPhone);
+            pstmtInsert.executeUpdate();
+
+            pstmtUpdate.setString(1, d_id);
+            pstmtUpdate.executeUpdate();
+
+            conn.commit(); 
+            return true;
+        } catch (SQLException e) {
+            conn.rollback();
+            System.out.println("Transaction Error: " + e.getMessage());
+            return false;
+        }
+    } catch (SQLException e) {
+        System.out.println("Connection Error: " + e.getMessage());
+        return false;
+    }
+}
 }
