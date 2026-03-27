@@ -30,6 +30,7 @@ public class rentprocess extends javax.swing.JFrame {
     this.dressName = sess.getDressName();
     this.dressPrice = sess.getDressPrice();
     String pathFromSession = sess.getDressImage();
+    this.dressPrice = sess.getDressPrice();
 
     // Update your labels
     jLabel1.setText(dressName);       
@@ -56,8 +57,8 @@ public class rentprocess extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
-        jLabel34 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        customers = new javax.swing.JLabel();
         managedress = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -160,20 +161,20 @@ public class rentprocess extends javax.swing.JFrame {
         });
         managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel34.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel34.setText("Customers");
-        jLabel34.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel34MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel34MouseEntered(evt);
-            }
-        });
-        managerent.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
         managerent.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        customers.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        customers.setText("Customers");
+        customers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                customersMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                customersMouseEntered(evt);
+            }
+        });
+        managerent.add(customers, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jPanel10.add(managerent, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
 
@@ -618,14 +619,6 @@ public class rentprocess extends javax.swing.JFrame {
         // managepay.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_managepayMouseExited
 
-    private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
-
-    }//GEN-LAST:event_jLabel34MouseClicked
-
-    private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
-
-    }//GEN-LAST:event_jLabel34MouseEntered
-
     private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
         //transtable table = new transtable();
         // table.setVisible(true);
@@ -831,6 +824,7 @@ public class rentprocess extends javax.swing.JFrame {
     String customerName = txt_custName.getText().trim();
     String customerPhone = txt_custContact.getText().trim();
     String userNotes = notes.getText().trim();
+    
 
     if (rentDateChooser.getDate() == null || returnDateChooser.getDate() == null || customerName.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Please fill in all details and select dates!");
@@ -838,17 +832,29 @@ public class rentprocess extends javax.swing.JFrame {
     }
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String transactionDate = sdf.format(new java.util.Date());
     String rDate = sdf.format(rentDateChooser.getDate());
     String retDate = sdf.format(returnDateChooser.getDate());
 
-    boolean success = conf.executeRentalTransaction(this.dressId, staffId, this.dressPrice, rDate, retDate, userNotes, customerName, customerPhone);
+    boolean success = conf.executeRentalTransaction(this.dressId, staffId, this.dressPrice, rDate, retDate, userNotes, customerName, customerPhone, transactionDate);
 
     if (success) {
         JOptionPane.showMessageDialog(null, "Booking Successful!");
+        
+        config.printReceipt(customerName, customerPhone, dressName, 
+                        String.valueOf(dressPrice), rDate, retDate);
+        
+        /*config.printReceipt(
+            txt_custName.getText(), 
+            txt_custContact.getText(), 
+            jLabel1.getText(), // Your Dress Name
+            String.valueOf(this.dressPrice), 
+            sdf.format(rentDateChooser.getDate()), 
+            sdf.format(returnDateChooser.getDate())
+        );
+*/
         this.dispose();
         new staff_dashboard().setVisible(true);
-    } else {
-        JOptionPane.showMessageDialog(null, "Error: Dress is unavailable or Database is busy. Please try again.");
     }
     }//GEN-LAST:event_confirmMouseClicked
 
@@ -896,6 +902,16 @@ public class rentprocess extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_custNameActionPerformed
 
+    private void customersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseClicked
+        customers c = new customers();
+        c.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_customersMouseClicked
+
+    private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
+
+    }//GEN-LAST:event_customersMouseEntered
+
     /**
      * @param args the command line arguments
      */
@@ -934,6 +950,7 @@ public class rentprocess extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel confirm;
+    private javax.swing.JLabel customers;
     private javax.swing.JLabel dashboard;
     private javax.swing.JLabel dashboard1;
     private javax.swing.JLabel dress;
@@ -966,7 +983,6 @@ public class rentprocess extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

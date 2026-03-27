@@ -11,6 +11,7 @@ public class session {
     private static String userRole;
     private static String userContact;
     private static String userAddress;
+    private static String userImage;
     
     // Dress data stays non-static as it changes per transaction
     private String d_id, d_name, d_image;
@@ -24,30 +25,12 @@ public class session {
         }
         return instance;
     }
- 
-    // 2. GETTERS AND SETTERS FOR USER ID (MUST BE STATIC)
-    public static int getUserId() {
-        return userId;
-    }
-
-    public static void setUserId(int aUserId) {
-        userId = aUserId;
-    }
-
-    // 3. DRESS DETAILS
-    public void setDressId(String id) { this.d_id = id; }
-    public String getDressId() { return d_id; }
-
-    public void setDressName(String name) { this.d_name = name; }
-    public String getDressName() { return d_name; }
-
-    public void setDressPrice(double price) { this.d_price = price; }
-    public double getDressPrice() { return d_price; }
+ public static int getUserId() { return userId; }
+    public static void setUserId(int aUserId) { userId = aUserId; }
     
-    public void setDressImage(String image) { this.d_image = image; }
-    public String getDressImage() { return d_image; }
+    public static void setUserImage(String image) { userImage = image; }
+    public static String getUserImage() { return userImage; }
 
-    // 4. OTHER USER DETAILS (STATIC ACCESS)
     public static void setUserName(String name) { userName = name; }
     public static String getUserName() { return userName; }
 
@@ -62,7 +45,17 @@ public class session {
 
     public static void setUserContact(String contact) { userContact = contact; }
     public static String getUserContact() { return userContact; }
-
+    
     public static void setUserAddress(String address) { userAddress = address; }
     public static String getUserAddress() { return userAddress; }
+    
+    // Non-static dress details
+    public void setDressId(String id) { this.d_id = id; }
+    public String getDressId() { return d_id; }
+    public void setDressName(String name) { this.d_name = name; }
+    public String getDressName() { return d_name; }
+    public void setDressPrice(double price) { this.d_price = price; }
+    public double getDressPrice() { return d_price; }
+    public void setDressImage(String image) { this.d_image = image; }
+    public String getDressImage() { return d_image; }
 }

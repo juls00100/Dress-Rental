@@ -7,6 +7,7 @@ package c_Staff;
 
 import a_Main.landingpage;
 import config.config;
+import javax.swing.JOptionPane;
 /**
  *
  * @author juls
@@ -23,17 +24,30 @@ public class rentals extends javax.swing.JFrame {
     public void displayCustomers(){
     
         config conf = new config();
-        String sql = "SELECT \n" +
-            "    u.full_name AS 'Borrower', \n" +
-            "    u.number AS 'Contact', \n" +
-            "    d.d_name AS 'Dress Name', \n" +
-            "    r.r_date AS 'Rent Date', \n" +
-            "    r.r_return AS 'Return Date'\n" +
-            "FROM tbl_rentals r\n" +
-            "JOIN Users u ON r.u_id = u.user_id\n" +
+        String sql = "SELECT " +
+            "    r.r_id AS 'ID', " + 
+            "    u.full_name AS 'Borrower', " +
+            "    u.number AS 'Contact', " +
+            "    d.d_name AS 'Dress Name', " +
+            "    r.r_total AS 'Total', " +
+            "    r_transaction_date AS 'Booked On', " + 
+            "    r.r_date AS 'Rent Date', " +
+            "    r.r_return AS 'Return Date' " +
+            "FROM tbl_rentals r " +
+            "JOIN Users u ON r.u_id = u.user_id " +
             "JOIN tbl_dresses d ON r.d_id = d.d_id";
         conf.displayData(sql, displyCus);
+        config.styleTable(displyCus);
         
+        // Hides the ID (Index 0)
+        displyCus.getColumnModel().getColumn(0).setMinWidth(0);
+        displyCus.getColumnModel().getColumn(0).setMaxWidth(0);
+        displyCus.getColumnModel().getColumn(0).setWidth(0);
+
+        // Hides the Total (Index 4) to save space
+        displyCus.getColumnModel().getColumn(4).setMinWidth(0);
+        displyCus.getColumnModel().getColumn(4).setMaxWidth(0);
+        displyCus.getColumnModel().getColumn(4).setWidth(0);
     }
 
     /**
@@ -56,8 +70,8 @@ public class rentals extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
-        jLabel34 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        customers = new javax.swing.JLabel();
         managedress = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -69,6 +83,13 @@ public class rentals extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         displyCus = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        edit = new javax.swing.JButton();
+        delete = new javax.swing.JButton();
+        search_bar = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        logout2 = new javax.swing.JPanel();
+        print = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -156,20 +177,20 @@ public class rentals extends javax.swing.JFrame {
         });
         managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel34.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel34.setText("Customers");
-        jLabel34.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel34MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel34MouseEntered(evt);
-            }
-        });
-        managerent.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
         managerent.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        customers.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        customers.setText("Customers");
+        customers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                customersMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                customersMouseEntered(evt);
+            }
+        });
+        managerent.add(customers, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jPanel10.add(managerent, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
 
@@ -266,7 +287,86 @@ public class rentals extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(displyCus);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 510, 220));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, 550, 220));
+
+        jButton1.setBackground(new java.awt.Color(255, 153, 153));
+        jButton1.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jButton1.setText("ADD");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 65, -1));
+
+        edit.setBackground(new java.awt.Color(255, 153, 153));
+        edit.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        edit.setText("EDIT");
+        edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editActionPerformed(evt);
+            }
+        });
+        jPanel2.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 80, -1));
+
+        delete.setBackground(new java.awt.Color(255, 153, 153));
+        delete.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        delete.setText("DELETE");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+        jPanel2.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, 110, -1));
+
+        search_bar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_barActionPerformed(evt);
+            }
+        });
+        search_bar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_barKeyReleased(evt);
+            }
+        });
+        jPanel2.add(search_bar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, 150, 30));
+
+        jButton4.setBackground(new java.awt.Color(255, 153, 153));
+        jButton4.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jButton4.setText("SEARCH");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 60, 100, 30));
+
+        logout2.setBackground(new java.awt.Color(46, 139, 8));
+        logout2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logout2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logout2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logout2MouseExited(evt);
+            }
+        });
+        logout2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        print.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        print.setForeground(new java.awt.Color(240, 240, 240));
+        print.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        print.setText("PRINT");
+        print.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                printMouseClicked(evt);
+            }
+        });
+        logout2.add(print, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 9, 110, 20));
+
+        jPanel2.add(logout2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 350, 120, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -307,14 +407,6 @@ public class rentals extends javax.swing.JFrame {
     private void logoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseExited
         //logout.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_logoutMouseExited
-
-    private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
-
-    }//GEN-LAST:event_jLabel34MouseClicked
-
-    private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
-
-    }//GEN-LAST:event_jLabel34MouseEntered
 
     private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
         //transtable table = new transtable();
@@ -384,6 +476,172 @@ public class rentals extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_managepay1MouseExited
 
+    private void customersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseClicked
+        customers c = new customers();
+        c.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_customersMouseClicked
+
+    private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
+
+    }//GEN-LAST:event_customersMouseEntered
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        this.dispose();
+        new dressMenu().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
+
+        int row = displyCus.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(null, "Please select a rental record to update!");
+        return;
+    }
+
+    // Get the ID (assuming r_id is the first column, or hidden)
+    // If you don't show r_id, we use the customer name and date to find it
+    String customer = displyCus.getValueAt(row, 0).toString();
+    String[] options = {"Pending", "Returned", "Overdue", "Cancelled"};
+    String newStatus = (String) JOptionPane.showInputDialog(null, "Update Status for " + customer,
+            "Change Status", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+    if (newStatus != null) {
+        // We find the record based on the Borrower name and the Booked On date
+        String bookedDate = displyCus.getValueAt(row, 3).toString();
+        String sql = "UPDATE tbl_rentals SET r_status = ? WHERE r_transaction_date = ?";
+        
+        try (java.sql.Connection conn = config.connectDB();
+             java.sql.PreparedStatement pst = conn.prepareStatement(sql)) {
+            
+            pst.setString(1, newStatus);
+            pst.setString(2, bookedDate);
+            pst.executeUpdate();
+            
+            // If returned, we should make the dress 'Available' again
+            if(newStatus.equals("Returned")){
+                 String dressName = displyCus.getValueAt(row, 2).toString();
+                 String updateDress = "UPDATE tbl_dresses SET d_status = 'Available' WHERE d_name = ?";
+                 java.sql.PreparedStatement pst2 = conn.prepareStatement(updateDress);
+                 pst2.setString(1, dressName);
+                 pst2.executeUpdate();
+            }
+
+            JOptionPane.showMessageDialog(null, "Rental Status Updated!");
+            displayCustomers(); // Refresh table
+        } catch (Exception e) {
+            System.out.println("Update Error: " + e.getMessage());
+        }
+    }
+    }//GEN-LAST:event_editActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+    int row = displyCus.getSelectedRow();
+    
+    if (row == -1) {
+        JOptionPane.showMessageDialog(null, "Please select a row to delete!");
+        return;
+    }
+
+    // 1. Grab the ID and Dress Name
+    // Ensure r_id is the FIRST column in your SQL query (Index 0)
+    String rentalID = displyCus.getValueAt(row, 0).toString();
+    String dressName = displyCus.getValueAt(row, 3).toString();
+
+    // THE FIREWALL: If rentalID is empty, the code STOPS here.
+    if (rentalID == null || rentalID.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Error: Selected row has no ID. Abortion to save data.");
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(null, 
+        "Are you sure? This will ONLY delete Record #" + rentalID, "WARNING", JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        try (java.sql.Connection conn = config.connectDB()) {
+            
+            // SURGICAL DELETE: The '?' means 'Only this exact value'
+            String sqlDelete = "DELETE FROM tbl_rentals WHERE r_id = ?";
+            java.sql.PreparedStatement pstDelete = conn.prepareStatement(sqlDelete);
+            pstDelete.setString(1, rentalID);
+            int rowsDeleted = pstDelete.executeUpdate();
+
+            // UPDATE DRESS STATUS
+            String sqlUpdate = "UPDATE tbl_dresses SET d_status = 'Available' WHERE d_name = ?";
+            java.sql.PreparedStatement pstUpdate = conn.prepareStatement(sqlUpdate);
+            pstUpdate.setString(1, dressName);
+            pstUpdate.executeUpdate();
+
+            if (rowsDeleted == 1) {
+                JOptionPane.showMessageDialog(null, "Successfully deleted 1 specific record.");
+            }
+            
+            displayCustomers(); // Refresh the table
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
+        }
+    }
+
+
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void search_barActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_barActionPerformed
+
+    }//GEN-LAST:event_search_barActionPerformed
+
+    private void search_barKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_barKeyReleased
+
+        String text = search_bar.getText();
+    config conf = new config();
+    String sql = "SELECT u.full_name AS 'Borrower', u.number AS 'Contact', " +
+                 "d.d_name AS 'Dress Name', r_transaction_date AS 'Booked On', " +
+                 "r.r_date AS 'Rent Date', r.r_return AS 'Return Date' " +
+                 "FROM tbl_rentals r " +
+                 "JOIN Users u ON r.u_id = u.user_id " +
+                 "JOIN tbl_dresses d ON r.d_id = d.d_id " +
+                 "WHERE u.full_name LIKE '%"+text+"%' OR d.d_name LIKE '%"+text+"%'";
+    
+    conf.displayData(sql, displyCus);
+    config.styleTable(displyCus);
+
+    }//GEN-LAST:event_search_barKeyReleased
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        search_barKeyReleased(null);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void printMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printMouseClicked
+      int row = displyCus.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(null, "Please select a rental record first!");
+        return;
+    }
+
+   String customer = displyCus.getValueAt(row, 1).toString(); // Borrower
+    String contact  = displyCus.getValueAt(row, 2).toString(); // Contact
+    String dress    = displyCus.getValueAt(row, 3).toString(); // Dress Name
+    String price    = displyCus.getValueAt(row, 4).toString(); // Total (Price)
+    String rentDate = displyCus.getValueAt(row, 6).toString(); // Rent Date
+    String retDate  = displyCus.getValueAt(row, 7).toString(); // Return Date
+
+    // Call your professional invoice method in config
+    config.printReceipt(customer, contact, dress, price, rentDate, retDate);
+    }//GEN-LAST:event_printMouseClicked
+
+    private void logout2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseClicked
+
+    private void logout2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseEntered
+
+    private void logout2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -420,9 +678,14 @@ public class rentals extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel customers;
     private javax.swing.JLabel dashboard;
+    private javax.swing.JButton delete;
     private javax.swing.JTable displyCus;
+    private javax.swing.JButton edit;
     private javax.swing.JPanel home;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -432,7 +695,6 @@ public class rentals extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -440,9 +702,12 @@ public class rentals extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel logout;
+    private javax.swing.JPanel logout2;
     private javax.swing.JPanel managedress;
     private javax.swing.JPanel managepay;
     private javax.swing.JPanel managepay1;
     private javax.swing.JPanel managerent;
+    private javax.swing.JLabel print;
+    private javax.swing.JTextField search_bar;
     // End of variables declaration//GEN-END:variables
 }

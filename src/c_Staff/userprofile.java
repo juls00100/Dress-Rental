@@ -5,17 +5,41 @@
  */
 package c_Staff;
 
+import config.session;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author juls
  */
 public class userprofile extends javax.swing.JFrame {
 
-    /**
-     * Creates new form userprofile1
-     */
     public userprofile() {
         initComponents();
+        displayDetails();
+    }
+    public void displayDetails() {
+        session sess = session.getInstance();
+
+        // Set Text
+        Id.setText("ID: " + sess.getUserId());
+        name.setText("Name: " + sess.getUserName());
+        email1.setText("Email: " + sess.getUserEmail());
+        roleLabel.setText("Position: " + sess.getUserRole());
+        statusLabel.setText("Account Status: " + sess.getUserStatus());
+
+        // Set Image - Use getUserImage() NOT getDressImage()
+        String imagePath = session.getUserImage(); 
+        if (imagePath != null && !imagePath.isEmpty()) {
+            ImageIcon ii = new ImageIcon(imagePath);
+            Image scaledImg = ii.getImage().getScaledInstance(user_pic.getWidth(), user_pic.getHeight(), Image.SCALE_SMOOTH);
+            user_pic.setIcon(new ImageIcon(scaledImg));
+            user_pic.setText(""); 
+        } else {
+            user_pic.setIcon(null);
+            user_pic.setText("No Photo Uploaded");
+        }
     }
 
     /**
@@ -38,8 +62,8 @@ public class userprofile extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
-        jLabel34 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        customers = new javax.swing.JLabel();
         managedress = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -51,12 +75,11 @@ public class userprofile extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         name = new javax.swing.JLabel();
         Id = new javax.swing.JLabel();
-        no = new javax.swing.JLabel();
-        add = new javax.swing.JLabel();
+        roleLabel = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
         email1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        user_pic = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -144,20 +167,20 @@ public class userprofile extends javax.swing.JFrame {
         });
         managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel34.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel34.setText("Customers");
-        jLabel34.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel34MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel34MouseEntered(evt);
-            }
-        });
-        managerent.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
         managerent.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        customers.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        customers.setText("Customers");
+        customers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                customersMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                customersMouseEntered(evt);
+            }
+        });
+        managerent.add(customers, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jPanel10.add(managerent, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
 
@@ -246,33 +269,23 @@ public class userprofile extends javax.swing.JFrame {
 
         name.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         name.setText("Name");
-        jPanel2.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 180, 30));
+        jPanel2.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 270, 30));
 
         Id.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         Id.setText("ID");
-        jPanel2.add(Id, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 120, 30));
+        jPanel2.add(Id, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 130, 30));
 
-        no.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        no.setText("Number");
-        jPanel2.add(no, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 230, 240, 30));
+        roleLabel.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        roleLabel.setText("Number");
+        jPanel2.add(roleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 230, 270, 30));
 
-        add.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        add.setText("Address");
-        jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 260, 290, 30));
+        statusLabel.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        statusLabel.setText("Address:");
+        jPanel2.add(statusLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 260, 260, 30));
 
         email1.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         email1.setText("Email");
         jPanel2.add(email1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 200, 270, 30));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profile.png"))); // NOI18N
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, 180, 240));
-
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 250, 170));
 
         jButton2.setBackground(new java.awt.Color(255, 153, 153));
         jButton2.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
@@ -283,6 +296,9 @@ public class userprofile extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, 80, -1));
+
+        user_pic.setBorder(new javax.swing.border.MatteBorder(null));
+        jPanel2.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 150, 170, 140));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -303,14 +319,6 @@ public class userprofile extends javax.swing.JFrame {
     private void managepayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepayMouseExited
         // managepay.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_managepayMouseExited
-
-    private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
-
-    }//GEN-LAST:event_jLabel34MouseClicked
-
-    private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
-
-    }//GEN-LAST:event_jLabel34MouseEntered
 
     private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
         //transtable table = new transtable();
@@ -392,13 +400,8 @@ public class userprofile extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        editprofile edit = new editprofile();
-        edit.setVisible(true);
+        new editprofile().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -407,6 +410,16 @@ public class userprofile extends javax.swing.JFrame {
         r.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void customersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseClicked
+        customers c = new customers();
+        c.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_customersMouseClicked
+
+    private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
+
+    }//GEN-LAST:event_customersMouseEntered
 
     /**
      * @param args the command line arguments
@@ -446,12 +459,11 @@ public class userprofile extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Id;
-    private javax.swing.JLabel add;
+    private javax.swing.JLabel customers;
     private javax.swing.JLabel dashboard;
     private javax.swing.JLabel email1;
     private javax.swing.JPanel home;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -461,8 +473,6 @@ public class userprofile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -474,6 +484,8 @@ public class userprofile extends javax.swing.JFrame {
     private javax.swing.JPanel managepay1;
     private javax.swing.JPanel managerent;
     private javax.swing.JLabel name;
-    private javax.swing.JLabel no;
+    private javax.swing.JLabel roleLabel;
+    private javax.swing.JLabel statusLabel;
+    private javax.swing.JLabel user_pic;
     // End of variables declaration//GEN-END:variables
 }

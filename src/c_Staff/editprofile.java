@@ -7,6 +7,12 @@ package c_Staff;
 
 import config.config;
 import config.session;
+import java.awt.Image;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -14,12 +20,23 @@ import config.session;
  */
 public class editprofile extends javax.swing.JFrame {
 
-    /**
-     * Creates new form editprofile1
-     */
     public editprofile() {
         initComponents();
+        displayCurrentData();
     }
+    private void displayCurrentData() {
+    session sess = session.getInstance();
+    fullname.setText(sess.getUserName());
+    email.setText(sess.getUserEmail());
+    number.setText(sess.getUserContact());
+    address.setText(sess.getUserAddress());
+    
+    if (session.getUserImage() != null && !session.getUserImage().isEmpty()) {
+            ImageIcon ii = new ImageIcon(session.getUserImage());
+            Image img = ii.getImage().getScaledInstance(user_pic.getWidth(), user_pic.getHeight(), Image.SCALE_SMOOTH);
+            user_pic.setIcon(new ImageIcon(img));
+        }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,8 +58,8 @@ public class editprofile extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
-        jLabel34 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        customers = new javax.swing.JLabel();
         managedress = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -61,7 +78,10 @@ public class editprofile extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         address = new javax.swing.JTextField();
         updateprof = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        logout1 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        user_pic = new javax.swing.JLabel();
+        updateprof1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -149,20 +169,20 @@ public class editprofile extends javax.swing.JFrame {
         });
         managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel34.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel34.setText("Customers");
-        jLabel34.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel34MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel34MouseEntered(evt);
-            }
-        });
-        managerent.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
         managerent.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        customers.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        customers.setText("Customers");
+        customers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                customersMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                customersMouseEntered(evt);
+            }
+        });
+        managerent.add(customers, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jPanel10.add(managerent, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
 
@@ -254,21 +274,27 @@ public class editprofile extends javax.swing.JFrame {
                 fullnameActionPerformed(evt);
             }
         });
-        jPanel2.add(fullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 180, 210, 40));
+        jPanel2.add(fullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 210, 40));
 
         jLabel5.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel5.setText("Enter new Name:");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, -1, 40));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, -1, 40));
 
         jLabel3.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel3.setText("Enter new Email: ");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, -1, 40));
-        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, 210, 40));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, -1, 40));
+        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 260, 210, 40));
 
         jLabel4.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel4.setText("Enter new Contact: ");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, 40));
-        jPanel2.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 210, 40));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, -1, 40));
+
+        number.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                numberActionPerformed(evt);
+            }
+        });
+        jPanel2.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 310, 210, 40));
 
         jLabel9.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel9.setText("Enter new Address: ");
@@ -276,7 +302,7 @@ public class editprofile extends javax.swing.JFrame {
         jPanel2.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 360, 210, 40));
 
         updateprof.setBackground(new java.awt.Color(255, 204, 255));
-        updateprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        updateprof.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         updateprof.setForeground(new java.awt.Color(51, 51, 51));
         updateprof.setText("Update Profile");
         updateprof.addActionListener(new java.awt.event.ActionListener() {
@@ -284,20 +310,48 @@ public class editprofile extends javax.swing.JFrame {
                 updateprofActionPerformed(evt);
             }
         });
-        jPanel2.add(updateprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 420, 190, 40));
+        jPanel2.add(updateprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 420, 140, 40));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 170, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
-        );
+        logout1.setBackground(new java.awt.Color(165, 42, 42));
+        logout1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logout1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logout1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logout1MouseExited(evt);
+            }
+        });
+        logout1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 170, 120));
+        jLabel11.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Cancel");
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
+        logout1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 9, 70, 20));
+
+        jPanel2.add(logout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 420, 70, 40));
+
+        user_pic.setBorder(new javax.swing.border.MatteBorder(null));
+        jPanel2.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, 170, 120));
+
+        updateprof1.setBackground(new java.awt.Color(255, 204, 255));
+        updateprof1.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        updateprof1.setForeground(new java.awt.Color(51, 51, 51));
+        updateprof1.setText("Update Photo");
+        updateprof1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateprof1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(updateprof1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 160, 130, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -336,14 +390,6 @@ public class editprofile extends javax.swing.JFrame {
     private void logoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseExited
         //logout.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_logoutMouseExited
-
-    private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
-
-    }//GEN-LAST:event_jLabel34MouseClicked
-
-    private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
-
-    }//GEN-LAST:event_jLabel34MouseEntered
 
     private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
         //transtable table = new transtable();
@@ -412,47 +458,34 @@ public class editprofile extends javax.swing.JFrame {
     }//GEN-LAST:event_fullnameActionPerformed
 
     private void updateprofActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateprofActionPerformed
+                                      
+    config conf = new config();
+    
+    // Get the path from the session (the 'current_path_variable')
+    String path = session.getUserImage(); 
+    
+    // ONE LINE SQL: No comma before WHERE, and column names match your DB
+    String sql = "UPDATE Users SET full_name = '"+fullname.getText()+"', email = '"+email.getText()+"', number = '"+number.getText()+"', address = '"+address.getText()+"', user_image = '"+path+"' WHERE user_id = '"+session.getUserId()+"'";
+    
+    System.out.println("Running SQL: " + sql);
+    
+    if(conf.updateRecord(sql) > 0) {
+        // Update Session memory so the Profile page sees the changes
+        session.setUserName(fullname.getText());
+        session.setUserEmail(email.getText());
+        session.setUserContact(number.getText());
+        session.setUserAddress(address.getText());
+        
+        JOptionPane.showMessageDialog(null, "Profile Updated Successfully!");
+        
+        // Switch back to profile view
+        new userprofile().setVisible(true);
+        this.dispose(); 
+    } else {
+        JOptionPane.showMessageDialog(null, "Update Failed! Check the Output console for SQL errors.");
+    }
 
-        String name = fullname.getText().trim();
-        String mail = email.getText().trim();
-        String num = number.getText().trim();
-        String addr = address.getText().trim();
 
-        // ✅ validation
-        if (name.isEmpty() || mail.isEmpty() || num.isEmpty() || addr.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "All fields are required!",
-                "Validation Error",
-                javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // ✅ get logged-in user ID from session
-        session sess = session.getInstance();
-        int uid = sess.getUserId();
-
-        // ✅ update only current user
-        config conf = new config();
-        String sql = "UPDATE Users SET full_name='" + name +
-        "', email='" + mail +
-        "', number='" + num +
-        "', address='" + addr +
-        "' WHERE user_id='" + uid + "'";
-
-        conf.updateRecord(sql);
-        sess.setUserName(name);
-        sess.setUserEmail(mail);
-        sess.setUserContact(num);
-        sess.setUserAddress(addr);
-
-        // ✅ success message
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Profile updated successfully!");
-
-        // refresh profile frame (like you wanted before: Id:, Name:, Email:, etc.)
-        userprofile prof = new userprofile();
-        prof.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_updateprofActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
@@ -460,6 +493,60 @@ public class editprofile extends javax.swing.JFrame {
         r.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void customersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseClicked
+        customers c = new customers();
+        c.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_customersMouseClicked
+
+    private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
+
+    }//GEN-LAST:event_customersMouseEntered
+
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
+        userprofile up = new userprofile();
+        up.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel11MouseClicked
+
+    private void logout1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout1MouseClicked
+
+    private void logout1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout1MouseEntered
+
+    private void logout1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout1MouseExited
+
+    private void numberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numberActionPerformed
+
+    private void updateprof1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateprof1ActionPerformed
+   JFileChooser browseImageFile = new JFileChooser();
+    FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGES", "png", "jpg", "jpeg");
+    browseImageFile.addChoosableFileFilter(fnef);
+    
+    if (browseImageFile.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = browseImageFile.getSelectedFile();
+        String path = selectedFile.getAbsolutePath();
+        
+        // 1. Save path to session so the Save button can find it
+        session.setUserImage(path); 
+        
+        // 2. Preview it on the label
+        ImageIcon ii = new ImageIcon(path);
+        Image img = ii.getImage().getScaledInstance(user_pic.getWidth(), user_pic.getHeight(), Image.SCALE_SMOOTH);
+        user_pic.setIcon(new ImageIcon(img));
+        
+        System.out.println("Path saved to session: " + path);
+    }
+
+    }//GEN-LAST:event_updateprof1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -499,12 +586,14 @@ public class editprofile extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField address;
+    private javax.swing.JLabel customers;
     private javax.swing.JLabel dashboard;
     private javax.swing.JTextField email;
     private javax.swing.JTextField fullname;
     private javax.swing.JPanel home;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
@@ -513,22 +602,23 @@ public class editprofile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel logout;
+    private javax.swing.JPanel logout1;
     private javax.swing.JPanel managedress;
     private javax.swing.JPanel managepay;
     private javax.swing.JPanel managepay1;
     private javax.swing.JPanel managerent;
     private javax.swing.JTextField number;
     private javax.swing.JButton updateprof;
+    private javax.swing.JButton updateprof1;
+    private javax.swing.JLabel user_pic;
     // End of variables declaration//GEN-END:variables
 }

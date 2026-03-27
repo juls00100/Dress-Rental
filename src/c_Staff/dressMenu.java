@@ -62,8 +62,8 @@ public class dressMenu extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
-        jLabel34 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        customers = new javax.swing.JLabel();
         managedress = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -168,20 +168,20 @@ public class dressMenu extends javax.swing.JFrame {
         });
         managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel34.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel34.setText("Customers");
-        jLabel34.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel34MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel34MouseEntered(evt);
-            }
-        });
-        managerent.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
         managerent.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        customers.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        customers.setText("Customers");
+        customers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                customersMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                customersMouseEntered(evt);
+            }
+        });
+        managerent.add(customers, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jPanel10.add(managerent, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
 
@@ -348,14 +348,6 @@ public class dressMenu extends javax.swing.JFrame {
         //logout.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_logoutMouseExited
 
-    private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
-
-    }//GEN-LAST:event_jLabel34MouseClicked
-
-    private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
-
-    }//GEN-LAST:event_jLabel34MouseEntered
-
     private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
         //transtable table = new transtable();
         // table.setVisible(true);
@@ -442,6 +434,16 @@ public class dressMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel8MouseClicked
 
+    private void customersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseClicked
+        customers c = new customers();
+        c.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_customersMouseClicked
+
+    private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
+
+    }//GEN-LAST:event_customersMouseEntered
+
     /**
      * @param args the command line arguments
      */
@@ -479,6 +481,7 @@ public class dressMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel availableCount;
+    private javax.swing.JLabel customers;
     private javax.swing.JLabel dashboard;
     private javax.swing.JPanel home;
     private javax.swing.JLabel jLabel1;
@@ -494,7 +497,6 @@ public class dressMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

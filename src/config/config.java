@@ -307,9 +307,9 @@ public static class session {
         }
     }
     
-    public boolean executeRentalTransaction(String d_id, int u_id, double price, String rDate, String retDate, String notes, String cName, String cPhone) {
+    public boolean executeRentalTransaction(String d_id, int u_id, double price, String rDate, String retDate, String notes, String cName, String cPhone, String tDate) {
     String checkQuery = "SELECT COUNT(*) FROM tbl_rentals WHERE d_id = ? AND ((? BETWEEN r_date AND r_return) OR (? BETWEEN r_date AND r_return) OR (r_date BETWEEN ? AND ?))";
-    String insertSql = "INSERT INTO tbl_rentals (u_id, d_id, r_total, r_date, r_return, r_status, r_notes, r_cust_name, r_cust_contact) VALUES (?, ?, ?, ?, ?, 'Pending', ?, ?, ?)";
+    String insertSql = "INSERT INTO tbl_rentals (u_id, d_id, r_total, r_date, r_return, r_status, r_notes, r_cust_name, r_cust_contact, r_transaction_date) VALUES (?, ?, ?, ?, ?, 'Pending', ?, ?, ?, ?)";
     String updateSql = "UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = ?";
 
     try (Connection conn = config.connectDB()) {
@@ -340,6 +340,7 @@ public static class session {
             pstmtInsert.setString(6, notes);
             pstmtInsert.setString(7, cName);
             pstmtInsert.setString(8, cPhone);
+            pstmtInsert.setString(9, tDate);
             pstmtInsert.executeUpdate();
 
             pstmtUpdate.setString(1, d_id);
@@ -356,5 +357,92 @@ public static class session {
         System.out.println("Connection Error: " + e.getMessage());
         return false;
     }
+}
+    public static void styleTable(JTable table) {
+    // 1. Header Design
+    table.getTableHeader().setFont(new java.awt.Font("Georgia", java.awt.Font.BOLD, 14));
+    table.getTableHeader().setOpaque(true);
+    table.getTableHeader().setBackground(new java.awt.Color(52, 73, 94)); // Dark Blue/Gray
+    table.getTableHeader().setForeground(new java.awt.Color(0,0,0)); 
+    
+    // 2. Row Design
+    table.setFont(new java.awt.Font("Georgia", java.awt.Font.PLAIN, 12));
+    table.setRowHeight(30);
+    table.setSelectionBackground(new java.awt.Color(41, 128, 185)); // Lighter Blue when clicked
+    table.setSelectionForeground(java.awt.Color.WHITE);
+    
+    // 3. Grid & Background
+    table.setShowGrid(true);
+    table.setGridColor(new java.awt.Color(230, 230, 230));
+    table.setBackground(java.awt.Color.PINK);
+}
+    public static void printReceipt(String customer, String contact, String item, String price, String pickUp, String returnDate) {
+    double amt = Double.parseDouble(price);
+    double vat = amt * 0.12; 
+    double subtotal = amt - vat;
+
+    String receiptText = 
+          "          TOLENTIN DRESS RENTAL          \n"
+        + "  TOLENTIN, SOUTH COTABATO, PHILIPPINES   \n"
+        + "          TIN: 123-456-789-000            \n"
+        + "------------------------------------------\n"
+        + "              SALES INVOICE               \n"
+        + "------------------------------------------\n"
+        + String.format(" Date: %-25s\n", new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date()))
+        + " Customer: " + customer + "\n"
+        + " Contact:  " + contact + "\n"
+        + "------------------------------------------\n"
+        + " QTY  ITEM DESCRIPTION           AMOUNT   \n"
+        + "------------------------------------------\n"
+        + String.format(" 1    %-25s %8.2f\n", item, amt)
+        + "------------------------------------------\n"
+        + String.format("      SUBTOTAL:                %10.2f\n", subtotal)
+        + String.format("      VAT (12%%):               %10.2f\n", vat)
+        + "------------------------------------------\n"
+        + String.format("      TOTAL AMOUNT:          P %8.2f\n", amt)
+        + "------------------------------------------\n"
+        + "\n"
+        + " ######################################## \n"
+        + " #          RENTAL PERIOD (DUE)         # \n"
+        + " #                                      # \n"
+        + String.format(" #  FROM: %-29s # \n", pickUp)
+        + String.format(" #  TO  : %-29s # \n", returnDate)
+        + " ######################################## \n"
+        + "\n"
+        + "------------------------------------------\n"
+        + "      THIS SERVES AS YOUR OFFICIAL        \n"
+        + "           SALES INVOICE.                 \n"
+        + "    Please present this upon return.      \n"
+        + "------------------------------------------\n"
+        + "        THANK YOU FOR SHOPPING!           \n"
+        + "__________________________________________\n"    
+        
+        ;
+
+    javax.swing.JTextArea receiptArea = new javax.swing.JTextArea();
+    receiptArea.setText(receiptText);
+    
+    // We use BOLD for the whole text but the # box makes the period pop
+    receiptArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.BOLD, 9));
+
+    try {
+        boolean complete = receiptArea.print();
+        if (complete) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Invoice Generated!");
+        }
+    } catch (java.awt.print.PrinterException e) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Printer Error: " + e.getMessage());
+    }
+}
+    public int updateRecord(String sql) {
+    int rowsUpdated = 0;
+    try (Connection conn = config.connectDB(); 
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        rowsUpdated = pstmt.executeUpdate();
+        System.out.println("Update Successful");
+    } catch (SQLException e) {
+        System.out.println("Update Error: " + e);
+    }
+    return rowsUpdated; // This returns 1 if successful, 0 if it failed
 }
 }

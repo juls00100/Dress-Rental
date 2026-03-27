@@ -18,7 +18,44 @@ public class staff_dashboard extends javax.swing.JFrame {
      */
     public staff_dashboard() {
         initComponents();
+        updateDashboardStats();
     }
+    public void updateDashboardStats() {
+    // This counts UNIQUE names from your rentals table
+    String countUniqueCustomers = "SELECT COUNT(DISTINCT r_cust_name) FROM tbl_rentals"; 
+    String countTotalDresses = "SELECT COUNT(*) FROM tbl_dresses";
+    String countAvailable = "SELECT COUNT(*) FROM tbl_dresses WHERE d_status = 'Available'";
+
+    try (java.sql.Connection conn = config.config.connectDB()) {
+        if (conn != null) {
+            // 1. Unique Customers from Rentals
+            try (java.sql.PreparedStatement pst = conn.prepareStatement(countUniqueCustomers);
+                 java.sql.ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    totcus.setText(rs.getInt(1) + "");
+                }
+            }
+
+            // 2. Total Dresses
+            try (java.sql.PreparedStatement pst = conn.prepareStatement(countTotalDresses);
+                 java.sql.ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    rentednum.setText(rs.getInt(1) + "");
+                }
+            }
+
+            // 3. Available Dresses
+            try (java.sql.PreparedStatement pst = conn.prepareStatement(countAvailable);
+                 java.sql.ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    activerents.setText(rs.getInt(1) + "");
+                }
+            }
+        }
+    } catch (Exception e) {
+        System.out.println("Dashboard Stat Error: " + e.getMessage());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,7 +77,7 @@ public class staff_dashboard extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
-        jLabel34 = new javax.swing.JLabel();
+        customers = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         managedress = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -54,12 +91,15 @@ public class staff_dashboard extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
+        rentednum = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
+        totcus = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        activerents = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -142,17 +182,17 @@ public class staff_dashboard extends javax.swing.JFrame {
         });
         managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel34.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel34.setText("Customers");
-        jLabel34.addMouseListener(new java.awt.event.MouseAdapter() {
+        customers.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        customers.setText("Customers");
+        customers.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel34MouseClicked(evt);
+                customersMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel34MouseEntered(evt);
+                customersMouseEntered(evt);
             }
         });
-        managerent.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        managerent.add(customers, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
         managerent.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
@@ -246,38 +286,56 @@ public class staff_dashboard extends javax.swing.JFrame {
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/rented-removebg-preview.png"))); // NOI18N
-        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, -30, 70, 120));
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, -60, 80, 110));
 
-        jLabel23.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel23.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel23.setText("Rented Dresses");
-        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel23.setText("Total Dresses");
+        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 330, -1));
 
-        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 170, 100));
+        rentednum.setFont(new java.awt.Font("Georgia", 1, 24)); // NOI18N
+        rentednum.setForeground(new java.awt.Color(46, 139, 8));
+        rentednum.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel6.add(rentednum, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 330, 30));
+
+        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 190, 360, 100));
 
         jPanel8.setBackground(new java.awt.Color(255, 183, 201));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel25.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel25.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel25.setText("Total Customers");
-        jPanel8.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+        jPanel8.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 330, -1));
 
         jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/customers-removebg-preview.png"))); // NOI18N
-        jPanel8.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 20, 70, 60));
+        jPanel8.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, -20, 80, 70));
 
-        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 180, 100));
+        totcus.setFont(new java.awt.Font("Georgia", 1, 24)); // NOI18N
+        totcus.setForeground(new java.awt.Color(46, 139, 8));
+        totcus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel8.add(totcus, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 330, 30));
+
+        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, 360, 100));
 
         jPanel4.setBackground(new java.awt.Color(255, 183, 201));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel11.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel11.setText("Active Rentals");
-        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 130, -1));
+        jLabel11.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Available Dresses");
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 310, -1));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/house-removebg-preview.png"))); // NOI18N
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 40, 60, 70));
+        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 60, 60));
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 60, 160, 100));
+        activerents.setFont(new java.awt.Font("Georgia", 1, 24)); // NOI18N
+        activerents.setForeground(new java.awt.Color(46, 139, 8));
+        activerents.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel4.add(activerents, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 330, 30));
+
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, 360, 100));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -313,13 +371,15 @@ public class staff_dashboard extends javax.swing.JFrame {
         //logout.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_logoutMouseExited
 
-    private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
+    private void customersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseClicked
+        customers c = new customers();
+        c.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_customersMouseClicked
 
-    }//GEN-LAST:event_jLabel34MouseClicked
-
-    private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
+    private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
     
-    }//GEN-LAST:event_jLabel34MouseEntered
+    }//GEN-LAST:event_customersMouseEntered
 
     private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
         //transtable table = new transtable();
@@ -428,6 +488,8 @@ public class staff_dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel activerents;
+    private javax.swing.JLabel customers;
     private javax.swing.JLabel dashboard;
     private javax.swing.JPanel home;
     private javax.swing.JLabel jLabel1;
@@ -445,7 +507,6 @@ public class staff_dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -459,5 +520,7 @@ public class staff_dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel managepay;
     private javax.swing.JPanel managepay1;
     private javax.swing.JPanel managerent;
+    private javax.swing.JLabel rentednum;
+    private javax.swing.JLabel totcus;
     // End of variables declaration//GEN-END:variables
 }
