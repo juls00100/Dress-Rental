@@ -6,7 +6,6 @@
 package b_Admin;
 
 import a_Main.landingpage;
-import c_Staff.dresstable;
 import config.session;
 import javax.swing.JOptionPane;
 import config.config;
@@ -22,9 +21,21 @@ public class manageuser extends javax.swing.JFrame {
      */
     public manageuser() {
         initComponents();
+        displayUsers();
+        config conf = new config();
+    conf.manageHover(managedress);
+    conf.manageHover(managerent);
+    conf.manageHover(managepay);
+    conf.manageHover(manageusers);
+    conf.manageHover(logout);
         
         session sess = session.getInstance();
     }
+    public void displayUsers() {
+    config conf = new config();
+    conf.displayData("SELECT user_id AS 'ID', full_name AS 'NAME', email AS 'EMAIL', role AS 'TYPE', status AS 'STATUS' FROM Users", user_tbl);
+    config.styleTable(user_tbl);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,27 +52,26 @@ public class manageuser extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         managepay = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        logout = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
-        jLabel34 = new javax.swing.JLabel();
+        rentals = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         manageusers = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        userss = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         managedress = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
+        dress = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         home = new javax.swing.JPanel();
         dashboard = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        logout = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         user_tbl = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -102,38 +112,19 @@ public class manageuser extends javax.swing.JFrame {
         });
         managepay.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel6.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel6.setText("Payments");
-        managepay.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
         managepay.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
 
-        jPanel10.add(managepay, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 150, 40));
-
-        logout.setBackground(new java.awt.Color(165, 42, 42));
-        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel6.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel6.setText("Payments");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoutMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                logoutMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                logoutMouseExited(evt);
+                jLabel6MouseClicked(evt);
             }
         });
-        logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        managepay.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
-        jLabel7.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(240, 240, 240));
-        jLabel7.setText("Logout");
-        logout.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
-
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
-        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
+        jPanel10.add(managepay, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 150, 40));
 
         managerent.setBackground(new java.awt.Color(255, 183, 201));
         managerent.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -149,9 +140,14 @@ public class manageuser extends javax.swing.JFrame {
         });
         managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel34.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel34.setText("Rentals");
-        managerent.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        rentals.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        rentals.setText("Rentals");
+        rentals.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rentalsMouseClicked(evt);
+            }
+        });
+        managerent.add(rentals, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
         managerent.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
@@ -180,9 +176,9 @@ public class manageuser extends javax.swing.JFrame {
         });
         manageusers.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, -1, -1));
 
-        jLabel4.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel4.setText("Users");
-        manageusers.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        userss.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        userss.setText("Users");
+        manageusers.add(userss, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/users-removebg-preview.png"))); // NOI18N
         manageusers.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
@@ -203,9 +199,14 @@ public class manageuser extends javax.swing.JFrame {
         });
         managedress.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel10.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel10.setText("Dress");
-        managedress.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 140, -1));
+        dress.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        dress.setText("Dress");
+        dress.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dressMouseClicked(evt);
+            }
+        });
+        managedress.add(dress, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 140, -1));
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/manangedress-removebg-preview.png"))); // NOI18N
         managedress.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
@@ -240,6 +241,29 @@ public class manageuser extends javax.swing.JFrame {
 
         jPanel10.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 150, 40));
 
+        logout.setBackground(new java.awt.Color(165, 42, 42));
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+        });
+        logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel7.setText("Back");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
+        logout.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
+        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
+
         jPanel2.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 420));
 
         user_tbl.setBackground(new java.awt.Color(255, 204, 255));
@@ -254,16 +278,6 @@ public class manageuser extends javax.swing.JFrame {
         jScrollPane1.setViewportView(user_tbl);
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 530, 260));
-
-        jButton5.setBackground(new java.awt.Color(255, 153, 153));
-        jButton5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton5.setText("Manage Dresses");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 380, 170, 40));
 
         jButton1.setBackground(new java.awt.Color(255, 153, 153));
         jButton1.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
@@ -331,20 +345,6 @@ public class manageuser extends javax.swing.JFrame {
        // managepay.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_managepayMouseExited
 
-    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        landingpage land = new landingpage();
-        land.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_logoutMouseClicked
-
-    private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
-       // logout.setBackground(new Color (255,255,255));
-    }//GEN-LAST:event_logoutMouseEntered
-
-    private void logoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseExited
-        //logout.setBackground(new Color (255,153,255));
-    }//GEN-LAST:event_logoutMouseExited
-
     private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
         //transtable table = new transtable();
        // table.setVisible(true);
@@ -390,7 +390,9 @@ public class manageuser extends javax.swing.JFrame {
     }//GEN-LAST:event_managedressMouseExited
 
     private void dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseClicked
-        
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_dashboardMouseClicked
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
@@ -407,45 +409,33 @@ public class manageuser extends javax.swing.JFrame {
         //home.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_homeMouseExited
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        dresstable table = new dresstable();
-        table.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         staffform form = new staffform();
         form.setVisible(true);
-        // REMOVE this.dispose(); <--- Delete this line
+        this.dispose(); 
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
         int row = user_tbl.getSelectedRow();
-
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row to edit!");
+        if(row == -1){
+            JOptionPane.showMessageDialog(null, "Select a user first!");
         } else {
-            // 1. Get the data from the selected row in your table
+            staffform sf = new staffform(); // Create the window
+
+            // Pull data from the table
             String id = user_tbl.getValueAt(row, 0).toString();
             String name = user_tbl.getValueAt(row, 1).toString();
             String mail = user_tbl.getValueAt(row, 2).toString();
             String num = user_tbl.getValueAt(row, 3).toString();
             String addr = user_tbl.getValueAt(row, 4).toString();
 
-            // 2. Create the form instance
-            staffform cf = new staffform();
+            // CALL THE METHOD YOU JUST CREATED
+            sf.prepareEdit(id, name, mail, num, addr);
 
-            // 3. Pass the data to the form's fields
-            cf.prepareEdit(id, name, mail, num, addr);
-
-            // 4. Show the form
-            cf.setVisible(true);
-
-            // DO NOT use this.dispose() here!
-            // We want manageuser to stay open so we can see it later.
+            sf.setVisible(true); // Show the window
+            this.dispose(); 
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -523,6 +513,34 @@ public class manageuser extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_search_barKeyReleased
 
+    private void dressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dressMouseClicked
+        alldress ad = new alldress();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_dressMouseClicked
+
+    private void rentalsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rentalsMouseClicked
+         rentals r = new rentals();
+        r.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_rentalsMouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        payments pay = new payments();
+        pay.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_logoutMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -561,14 +579,13 @@ public class manageuser extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dashboard;
+    private javax.swing.JLabel dress;
     private javax.swing.JPanel home;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -576,8 +593,6 @@ public class manageuser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
@@ -590,7 +605,9 @@ public class manageuser extends javax.swing.JFrame {
     private javax.swing.JPanel managepay;
     private javax.swing.JPanel managerent;
     private javax.swing.JPanel manageusers;
+    private javax.swing.JLabel rentals;
     private javax.swing.JTextField search_bar;
     private javax.swing.JTable user_tbl;
+    private javax.swing.JLabel userss;
     // End of variables declaration//GEN-END:variables
 }

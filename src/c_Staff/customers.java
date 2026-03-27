@@ -20,6 +20,14 @@ public class customers extends javax.swing.JFrame {
     public customers() {
         initComponents();
         displayCustomers();
+        
+        config conf = new config();
+        conf.manageHover(logout);
+        conf.manageHover(managerent);
+        conf.manageHover(managepay);
+        conf.manageHover(managepay1);
+        conf.manageHover(managedress);
+        conf.manageHover(home);
     }
     public void displayCustomers() {
     config conf = new config();

@@ -7,6 +7,8 @@ package b_Admin;
 
 import config.config;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -20,22 +22,28 @@ public class rentals extends javax.swing.JFrame {
     public rentals() {
         initComponents();
         displayRent();
+        config conf = new config();
+    conf.manageHover(managedress);
+    conf.manageHover(managerent);
+    conf.manageHover(managepay);
+    conf.manageHover(manageusers);
+    conf.manageHover(logout);
         
         config.session sess = config.session.getInstance();
     
-    if (sess.getUserName() != null) {
-        // This will display: "Online Dress Rental | Logged in as: Staff 1"
-        jLabel2.setText("Online Dress Rental  |  Logged in as: " + sess.getUserName());
-    }
     
     }
-    
-    void displayRent(){
+    public void displayRent(){
         config conf = new config();
-        String sql = "SELECT rental_id, u_fname, d_name, rent_date, return_date, status FROM rental_tbl";
+        // SQL joining rentals and dresses so we see the Dress Name, not just an ID
+        String sql = "SELECT r.r_id AS 'ID', r.r_cust_name AS 'CUSTOMER', "
+                   + "d.d_name AS 'DRESS', r.r_date AS 'RENTED', "
+                   + "r.r_return AS 'RETURN DATE', r.r_status AS 'STATUS' "
+                   + "FROM tbl_rentals r "
+                   + "JOIN tbl_dresses d ON r.d_id = d.d_id";
+        
         conf.displayData(sql, renttable);
-
-
+        config.styleTable(renttable); // Standardize the look
     }
 
     /**
@@ -49,11 +57,8 @@ public class rentals extends javax.swing.JFrame {
 
         jPanel10 = new javax.swing.JPanel();
         managepay = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        back = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
         jLabel34 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -67,12 +72,12 @@ public class rentals extends javax.swing.JFrame {
         home = new javax.swing.JPanel();
         dashboard = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        logout = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        edit = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         search = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -96,6 +101,9 @@ public class rentals extends javax.swing.JFrame {
         });
         managepay.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
         jLabel6.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel6.setText("Payments");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -105,34 +113,7 @@ public class rentals extends javax.swing.JFrame {
         });
         managepay.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
-        managepay.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
-
         jPanel10.add(managepay, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 150, 40));
-
-        back.setBackground(new java.awt.Color(165, 42, 42));
-        back.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                backMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                backMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                backMouseExited(evt);
-            }
-        });
-        back.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel7.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(240, 240, 240));
-        jLabel7.setText("Back");
-        back.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
-
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
-        back.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        jPanel10.add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
 
         managerent.setBackground(new java.awt.Color(255, 209, 220));
         managerent.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -257,6 +238,29 @@ public class rentals extends javax.swing.JFrame {
 
         jPanel10.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 150, 40));
 
+        logout.setBackground(new java.awt.Color(165, 42, 42));
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+        });
+        logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel7.setText("Back");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
+        logout.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
+        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
+
         getContentPane().add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 420));
 
         jPanel1.setBackground(new java.awt.Color(255, 209, 220));
@@ -265,47 +269,21 @@ public class rentals extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 51, 153));
         jLabel2.setText("Admin Dashboard  ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, 20));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 500, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__6_-removebg-preview.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
 
-        edit.setBackground(new java.awt.Color(255, 153, 153));
-        edit.setText("EDIT");
-        edit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editActionPerformed(evt);
-            }
-        });
-        jPanel1.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 65, -1));
-
-        jButton3.setBackground(new java.awt.Color(255, 153, 153));
-        jButton3.setText("DELETE");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 60, -1, -1));
-
-        jButton4.setBackground(new java.awt.Color(255, 153, 153));
-        jButton4.setText("REFRESH");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, -1, -1));
-
-        jLabel3.setText("Search");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, -1, 30));
+        jLabel3.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel3.setText("Search:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, -1, 30));
 
         search.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                searchKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchKeyReleased(evt);
             }
         });
-        jPanel1.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 60, 160, 30));
+        jPanel1.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, 250, 30));
 
         renttable.setBackground(new java.awt.Color(255, 204, 255));
         renttable.setModel(new javax.swing.table.DefaultTableModel(
@@ -323,13 +301,8 @@ public class rentals extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 480));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        payments pay = new payments();
-        pay.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel6MouseClicked
 
     private void managepayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepayMouseEntered
         // managepay.setBackground(new Color (255,255,255));
@@ -339,20 +312,6 @@ public class rentals extends javax.swing.JFrame {
         // managepay.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_managepayMouseExited
 
-    private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
-        admin_dash land = new admin_dash();
-        land.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_backMouseClicked
-
-    private void backMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseEntered
-        // logout.setBackground(new Color (255,255,255));
-    }//GEN-LAST:event_backMouseEntered
-
-    private void backMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseExited
-        //logout.setBackground(new Color (255,153,255));
-    }//GEN-LAST:event_backMouseExited
-
     private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
         rentals rent = new rentals();
         rent.setVisible(true);
@@ -360,15 +319,13 @@ public class rentals extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel34MouseClicked
 
     private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
-        transtable table = new transtable();
-        table.setVisible(true);
-        this.dispose();
+       
     }//GEN-LAST:event_jLabel34MouseEntered
 
     private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
-        //transtable table = new transtable();
-        // table.setVisible(true);
-        //this.dispose();
+        c_Staff.rentprocess rp = new c_Staff.rentprocess();
+        rp.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_managerentMouseClicked
 
     private void managerentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseEntered
@@ -441,81 +398,31 @@ public class rentals extends javax.swing.JFrame {
     private void homeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseExited
         //home.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_homeMouseExited
+    
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        payments pay = new payments();
+        pay.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
 
-    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-        int row = renttable.getSelectedRow();
+    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
+        config conf = new config();
+        String query = search.getText();
+        String sql = "SELECT r.r_id, r.r_cust_name, d.d_name, r.r_date, r.r_return, r.r_status "
+                   + "FROM tbl_rentals r JOIN tbl_dresses d ON r.d_id = d.d_id "
+                   + "WHERE r.r_cust_name LIKE '%"+query+"%' OR d.d_name LIKE '%"+query+"%'";
+        conf.displayData(sql, renttable);
+    }//GEN-LAST:event_searchKeyReleased
 
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row to edit!");
-            return;
-        }
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseClicked
 
-        // Get data from table
-        int id = Integer.parseInt(renttable.getValueAt(row, 0).toString());
-        String name = renttable.getValueAt(row, 1).toString();
-        String description = renttable.getValueAt(row, 2).toString();
-        String size = renttable.getValueAt(row, 3).toString();
-        double price = Double.parseDouble(renttable.getValueAt(row, 4).toString());
-        String imagePath = renttable.getValueAt(row, 5).toString();
-
-        // Open update form WITH data
-        updatedress upd = new updatedress();
-        upd.setDressId(id);
-        upd.setName(name);
-        upd.setDescription(description);
-        upd.setSize(size);
-        upd.setPrice(price);
-        upd.setImagePath(imagePath);
-        upd.setVisible(true);
-    }//GEN-LAST:event_editActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int row = renttable.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a record to delete!");
-        } else {
-            int confirm = JOptionPane.showConfirmDialog(null, "Delete this record?", "Warning", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                config conf = new config();
-                String id = renttable.getValueAt(row, 0).toString();
-                String sql = "DELETE FROM rental_tbl WHERE rental_id = '" + id + "'";
-
-                if (conf.deleteData(sql)) {
-                    JOptionPane.showMessageDialog(this, "Deleted Successfully!");
-                    displayRent(); // Refresh the table
-                }
-            }
-    }//GEN-LAST:event_jButton3ActionPerformed
-    }
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void searchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyTyped
-        String text = search.getText();
-
-        String sql = "SELECT rental_id AS 'TRANSACTION ID', user_id, dress_name, rent_date, return_date, status "
-        + "FROM rental_tbl WHERE "
-        + "CAST(rental_id AS TEXT) LIKE '%" + text + "%' OR "
-        + "CAST(u_fname AS TEXT) LIKE '%" + text + "%' OR "
-        + "CAST(d_name AS TEXT) LIKE '%" + text + "%' OR "
-        + "rent_date LIKE '%" + text + "%' OR "
-        + "return_date LIKE '%" + text + "%' OR "
-        + "status LIKE '%" + text + "%'";
-
-        try {
-            config conf = new config();
-            // Uses the getData method you have in your config.java
-            java.sql.ResultSet rs = conf.getData(sql);
-
-            if (rs != null) {
-                // Update the table with matching results only
-                renttable.setModel(net.proteanit.sql.DbUtils.resultSetToTableModel(rs));
-            }
-        } catch (Exception e) {
-            System.out.println("Search Error: " + e.getMessage());
-        }
-    }//GEN-LAST:event_searchKeyTyped
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_logoutMouseClicked
 
     /**
      * @param args the command line arguments
@@ -554,12 +461,8 @@ public class rentals extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel back;
     private javax.swing.JLabel dashboard;
-    private javax.swing.JButton edit;
     private javax.swing.JPanel home;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -578,6 +481,7 @@ public class rentals extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel logout;
     private javax.swing.JPanel managedress;
     private javax.swing.JPanel managepay;
     private javax.swing.JPanel managerent;

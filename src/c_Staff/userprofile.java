@@ -5,6 +5,7 @@
  */
 package c_Staff;
 
+import config.config;
 import config.session;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -18,6 +19,14 @@ public class userprofile extends javax.swing.JFrame {
     public userprofile() {
         initComponents();
         displayDetails();
+        
+        config conf = new config();
+        conf.manageHover(logout);
+        conf.manageHover(managerent);
+        conf.manageHover(managepay);
+        conf.manageHover(managepay1);
+        conf.manageHover(managedress);
+        conf.manageHover(home);
     }
     public void displayDetails() {
         session sess = session.getInstance();
@@ -59,8 +68,8 @@ public class userprofile extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         logout = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         customers = new javax.swing.JLabel();
@@ -126,9 +135,6 @@ public class userprofile extends javax.swing.JFrame {
 
         logout.setBackground(new java.awt.Color(165, 42, 42));
         logout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoutMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logoutMouseEntered(evt);
             }
@@ -137,6 +143,9 @@ public class userprofile extends javax.swing.JFrame {
             }
         });
         logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
+        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(240, 240, 240));
@@ -147,9 +156,6 @@ public class userprofile extends javax.swing.JFrame {
             }
         });
         logout.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
-
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
-        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
 
@@ -390,16 +396,6 @@ public class userprofile extends javax.swing.JFrame {
         // logout.setBackground(new Color (255,255,255));
     }//GEN-LAST:event_logoutMouseEntered
 
-    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-      
-    }//GEN-LAST:event_logoutMouseClicked
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-         staff_dashboard dash = new staff_dashboard();
-        dash.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel7MouseClicked
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new editprofile().setVisible(true);
         this.dispose();
@@ -420,6 +416,12 @@ public class userprofile extends javax.swing.JFrame {
     private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
 
     }//GEN-LAST:event_customersMouseEntered
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        staff_dashboard dash = new staff_dashboard();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel7MouseClicked
 
     /**
      * @param args the command line arguments

@@ -5,7 +5,9 @@
  */
 package b_Admin;
 
+import a_Main.landingpage;
 import config.config;
+import static config.config.hashPassword;
 import javax.swing.JOptionPane;
 
 
@@ -20,6 +22,12 @@ public class staffform extends javax.swing.JFrame {
      */
     public staffform() {
         initComponents();
+        config conf = new config();
+    conf.manageHover(managedress);
+    conf.manageHover(managerent);
+    conf.manageHover(managepay);
+    conf.manageHover(manageusers);
+    conf.manageHover(logout);
     }
 
     /**
@@ -32,9 +40,6 @@ public class staffform extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         number = new javax.swing.JTextField();
         address = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -47,15 +52,36 @@ public class staffform extends javax.swing.JFrame {
         user_id = new javax.swing.JTextField();
         email = new javax.swing.JTextField();
         name = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         role = new javax.swing.JComboBox<>();
-        status = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnSave = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         cancel = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jPanel10 = new javax.swing.JPanel();
+        managepay = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        managerent = new javax.swing.JPanel();
+        rentals = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        manageusers = new javax.swing.JPanel();
+        jLabel28 = new javax.swing.JLabel();
+        userss = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        managedress = new javax.swing.JPanel();
+        dress = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        home = new javax.swing.JPanel();
+        dashboard = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        logout = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -63,68 +89,47 @@ public class staffform extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 209, 220));
         jPanel1.setPreferredSize(new java.awt.Dimension(590, 480));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__5_-removebg-preview (1).png"))); // NOI18N
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 130, 280, 200));
-
-        jLabel2.setFont(new java.awt.Font("Bradley Hand ITC", 1, 36)); // NOI18N
-        jLabel2.setText("Dress Rent");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 207, -1));
-
-        jLabel3.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
-        jLabel3.setText("PREMIUM QUALITY");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 200, 32));
-        jPanel1.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 250, 240, 30));
-        jPanel1.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 290, 240, 30));
+        jPanel1.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 240, 240, 30));
+        jPanel1.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 280, 240, 30));
 
         jLabel5.setFont(new java.awt.Font("Georgia", 1, 20)); // NOI18N
         jLabel5.setText("ADD USER");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, -1, 20));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, -1, 20));
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 340, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel11.setText("FULL NAME:");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 170, -1, 30));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, -1, 30));
 
         jLabel7.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel7.setText("EMAIL:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 210, -1, 30));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, -1, 30));
 
         jLabel14.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel14.setText("PHONE:");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 250, -1, 30));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 240, -1, 30));
 
         jLabel15.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        jLabel15.setText("ROLE/STATUS:");
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 370, -1, 30));
+        jLabel15.setText("ROLE:");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, -1, 30));
 
         jLabel16.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel16.setText("STAFF ID:");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, -1, 30));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, -1, 30));
 
         user_id.setEditable(false);
         user_id.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(255, 102, 102)));
-        jPanel1.add(user_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 130, 240, 30));
+        jPanel1.add(user_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 120, 240, 30));
 
         email.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(255, 102, 102)));
-        jPanel1.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 210, 240, 30));
+        jPanel1.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, 240, 30));
 
         name.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(255, 102, 102)));
-        jPanel1.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 240, 30));
-
-        jTextField5.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        jTextField5.setText("MM-DD-YYYY");
-        jTextField5.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(255, 102, 102)));
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 330, 170, 30));
+        jPanel1.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 160, 240, 30));
 
         jLabel17.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel17.setText("ADDRESS:");
-        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 290, -1, 30));
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 280, -1, 30));
 
         role.setBackground(new java.awt.Color(255, 102, 102));
         role.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
@@ -134,15 +139,11 @@ public class staffform extends javax.swing.JFrame {
                 roleActionPerformed(evt);
             }
         });
-        jPanel1.add(role, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 370, 90, 30));
-
-        status.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
-        status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Approved", "Pending" }));
-        jPanel1.add(status, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 370, 100, 30));
+        jPanel1.add(role, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, 240, 30));
 
         jLabel18.setFont(new java.awt.Font("Georgia", 0, 16)); // NOI18N
         jLabel18.setText("EMPLOYMENT DATE:");
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 330, -1, 30));
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, -1, 30));
 
         jPanel4.setBackground(new java.awt.Color(46, 139, 8));
 
@@ -167,7 +168,7 @@ public class staffform extends javax.swing.JFrame {
             .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 410, 110, 30));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 410, 110, 30));
 
         jPanel3.setBackground(new java.awt.Color(165, 42, 42));
 
@@ -192,7 +193,186 @@ public class staffform extends javax.swing.JFrame {
             .addComponent(cancel, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 410, 120, 30));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 410, 120, 30));
+
+        jDateChooser1.setDateFormatString("MM dd, yyyy");
+        jPanel1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 320, 180, -1));
+
+        jPanel10.setBackground(new java.awt.Color(255, 235, 239));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        managepay.setBackground(new java.awt.Color(255, 183, 201));
+        managepay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managepayMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managepayMouseExited(evt);
+            }
+        });
+        managepay.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jLabel6.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel6.setText("Payments");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
+        managepay.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jPanel10.add(managepay, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 150, 40));
+
+        managerent.setBackground(new java.awt.Color(255, 183, 201));
+        managerent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                managerentMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managerentMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managerentMouseExited(evt);
+            }
+        });
+        managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        rentals.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        rentals.setText("Rentals");
+        rentals.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rentalsMouseClicked(evt);
+            }
+        });
+        managerent.add(rentals, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
+        managerent.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel10.add(managerent, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
+
+        manageusers.setBackground(new java.awt.Color(255, 209, 220));
+        manageusers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                manageusersMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                manageusersMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                manageusersMouseExited(evt);
+            }
+        });
+        manageusers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel28.setText("Manage Rentals");
+        jLabel28.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel28MouseClicked(evt);
+            }
+        });
+        manageusers.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, -1, -1));
+
+        userss.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        userss.setText("Users");
+        manageusers.add(userss, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/users-removebg-preview.png"))); // NOI18N
+        manageusers.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel10.add(manageusers, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 190, 40));
+
+        managedress.setBackground(new java.awt.Color(255, 183, 201));
+        managedress.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                managedressMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managedressMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managedressMouseExited(evt);
+            }
+        });
+        managedress.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dress.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        dress.setText("Dress");
+        dress.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dressMouseClicked(evt);
+            }
+        });
+        managedress.add(dress, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 140, -1));
+
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/manangedress-removebg-preview.png"))); // NOI18N
+        managedress.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel10.add(managedress, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 150, 40));
+
+        home.setBackground(new java.awt.Color(255, 183, 201));
+        home.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                homeMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                homeMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                homeMouseExited(evt);
+            }
+        });
+        home.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dashboard.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        dashboard.setText("Dashboard");
+        dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashboardMouseClicked(evt);
+            }
+        });
+        home.add(dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 120, 40));
+
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home-removebg-preview.png"))); // NOI18N
+        home.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel10.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 150, 40));
+
+        logout.setBackground(new java.awt.Color(165, 42, 42));
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+        });
+        logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel8.setText("Back");
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
+        logout.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
+        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
+
+        jPanel1.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 420));
+
+        jLabel2.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 51, 153));
+        jLabel2.setText("Admin Dashboard  |  Manage Users");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, 20));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__6_-removebg-preview.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, -1));
 
@@ -200,87 +380,196 @@ public class staffform extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
-
     private void roleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_roleActionPerformed
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
-
         config conf = new config();
 
-        // Check if we are UPDATING or SAVING NEW
-        if (btnSave.getText().equals("UPDATE")) {
-            String sql = "UPDATE Users SET full_name='" + name.getText() +
-            "', email='" + email.getText() +
-            "', number='" + number.getText() +
-            "', address='" + address.getText() +
-             "', password ='" + role.getSelectedItem() +  
-            "', role ='" + role.getSelectedItem() +  
-            "', status = '" + status.getSelectedItem()+        
-            "' WHERE user_id='" + user_id.getText() + "'";
-            conf.updateRecord(sql);
-        } else {
-           
-    // 1. Added 'password' to the column list
-    // 2. Added '1234' as the default value in the VALUES list
-    String sql = "INSERT INTO Users (full_name, email, number, address, role, status, password) VALUES ('"
-                + name.getText() + "', '"      
-                + email.getText() + "', '"     
-                + number.getText() + "', '"    
-                + address.getText() + "', '"   
-                + role.getSelectedItem() + "', '"           
-                + status.getSelectedItem() + "', "
-                + "'1234')"; // <--- Hardcoded default password
-    
-    conf.addRecord(sql);
+    // 1. DATA VALIDATION
+    if (name.getText().trim().isEmpty() || email.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please fill in Name and Email!");
+        return;
+    }
 
+    int result = 0;
+
+    if (btnSave.getText().equals("UPDATE")) {
+        System.out.println("Starting UPDATE process...");
+        String sql = "UPDATE Users SET full_name = ?, email = ?, number = ?, address = ?, role = ? WHERE user_id = ?";
+        result = conf.updateRecordWithValues(sql, 
+            name.getText(), email.getText(), number.getText(), address.getText(), 
+            role.getSelectedItem().toString(), user_id.getText()
+        );
+    } else {
+        System.out.println("Starting INSERT process...");
+        String hashedPass = config.hashPassword("1234"); 
+        String sql = "INSERT INTO Users (full_name, email, number, address, role, password, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        result = conf.addRecord(sql, 
+            name.getText(), email.getText(), number.getText(), address.getText(), 
+            role.getSelectedItem().toString(), hashedPass, "Approved"
+        );
+    }
+
+    if (result > 0) {
+        System.out.println("Database action successful. Showing dialog...");
+        JOptionPane.showMessageDialog(null, "Success!");
+
+        // THE "FORCE DISPOSE" STRATEGY
+        System.out.println("Closing current form...");
+        this.dispose(); 
+
+        try {
+            System.out.println("Opening manageuser...");
+            manageuser mu = new manageuser();
+            mu.setVisible(true);
+        } catch (Exception e) {
+            // If it crashes here, the form is already closed, but we see WHY it crashed
+            System.out.println("CRITICAL ERROR: manageuser failed to load! Reason: " + e.getMessage());
+            e.printStackTrace(); 
         }
-
-        JOptionPane.showMessageDialog(null, "Saved Successfully!");
-
-        // REFRESH AND SHOW DASHBOARD
-        for (java.awt.Frame frame : java.awt.Frame.getFrames()) {
-            if (frame instanceof manageuser) {
-                manageuser mu = (manageuser) frame;
-                mu.displayUser();   // Make sure this is 'public' in manageuser.java
-                mu.toFront();
-                mu.requestFocus();
-            }
-        }
-
-        this.dispose();
-        }
-
-        // --- PREPARE EDIT METHOD (Must be outside other methods) ---
-      public void prepareEdit(String id, String nameVal, String mail, String num, String addr) {
-    user_id.setText(id);
-    name.setText(nameVal); // Use the 'name' JTextField, not user_id
-    email.setText(mail);
-    number.setText(num);
-    address.setText(addr);
-
-            // Disable the ID field so the user cannot change the Primary Key
-            user_id.setEditable(false);
-
-            // Change the button text so btnSave knows to UPDATE instead of INSERT
-            btnSave.setText("UPDATE");
-
+    } else {
+        System.out.println("Database action failed. No rows affected.");
+    }
 
     }//GEN-LAST:event_btnSaveMouseClicked
-
+    
+    private void closeAndOpenTable() {
+    try {
+        this.dispose(); 
+        manageuser mu = new manageuser();
+        mu.setVisible(true);
+        
+    } catch (Exception e) {
+        System.out.println("CRITICAL ERROR: manageuser failed to load: " + e.getMessage());
+        e.printStackTrace(); 
+    }
+}
+    
     private void cancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelMouseClicked
         manageuser manage = new manageuser();
         manage.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_cancelMouseClicked
 
+    private void managepayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepayMouseEntered
+        // managepay.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_managepayMouseEntered
+
+    private void managepayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepayMouseExited
+        // managepay.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_managepayMouseExited
+
+    private void rentalsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rentalsMouseClicked
+        rentals r = new rentals();
+        r.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_rentalsMouseClicked
+
+    private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
+        //transtable table = new transtable();
+        // table.setVisible(true);
+        //this.dispose();
+    }//GEN-LAST:event_managerentMouseClicked
+
+    private void managerentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseEntered
+        //managerent.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_managerentMouseEntered
+
+    private void managerentMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseExited
+        // managerent.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_managerentMouseExited
+
+    private void jLabel28MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel28MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel28MouseClicked
+
+    private void manageusersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageusersMouseClicked
+
+    }//GEN-LAST:event_manageusersMouseClicked
+
+    private void manageusersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageusersMouseEntered
+
+    }//GEN-LAST:event_manageusersMouseEntered
+
+    private void manageusersMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageusersMouseExited
+
+    }//GEN-LAST:event_manageusersMouseExited
+
+    private void dressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dressMouseClicked
+        alldress ad = new alldress();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_dressMouseClicked
+
+    private void managedressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managedressMouseClicked
+        //adddress dress = new adddress();
+        //dress.setVisible(true);
+        //this.dispose();
+    }//GEN-LAST:event_managedressMouseClicked
+
+    private void managedressMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managedressMouseEntered
+        //managedress.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_managedressMouseEntered
+
+    private void managedressMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managedressMouseExited
+        // managedress.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_managedressMouseExited
+
+    private void dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseClicked
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_dashboardMouseClicked
+
+    private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_homeMouseClicked
+
+    private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
+        //  home.setBackground(new Color (255,255,255));
+    }//GEN-LAST:event_homeMouseEntered
+
+    private void homeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseExited
+        //home.setBackground(new Color (255,153,255));
+    }//GEN-LAST:event_homeMouseExited
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        payments pay = new payments();
+        pay.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_logoutMouseClicked
+
     /**
      * @param args the command line arguments
      */
+    // This method allows OTHER files (like manageuser) to send data into these boxes
+public void prepareEdit(String id, String nameVal, String mail, String num, String addr) {
+    user_id.setText(id);
+    name.setText(nameVal); 
+    email.setText(mail);
+    number.setText(num);
+    address.setText(addr);
+
+    // Disable the ID field so the Admin cannot change the Primary Key
+    user_id.setEditable(false);
+
+    // Change the button text so the button knows to UPDATE instead of INSERT
+    btnSave.setText("UPDATE");
+}
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -324,27 +613,45 @@ public class staffform extends javax.swing.JFrame {
     private javax.swing.JTextField address;
     private javax.swing.JLabel btnSave;
     private javax.swing.JLabel cancel;
+    private javax.swing.JLabel dashboard;
+    private javax.swing.JLabel dress;
     private javax.swing.JTextField email;
+    private javax.swing.JPanel home;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JPanel logout;
+    private javax.swing.JPanel managedress;
+    private javax.swing.JPanel managepay;
+    private javax.swing.JPanel managerent;
+    private javax.swing.JPanel manageusers;
     private javax.swing.JTextField name;
     private javax.swing.JTextField number;
+    private javax.swing.JLabel rentals;
     private javax.swing.JComboBox<String> role;
-    private javax.swing.JComboBox<String> status;
     private javax.swing.JTextField user_id;
+    private javax.swing.JLabel userss;
     // End of variables declaration//GEN-END:variables
 }

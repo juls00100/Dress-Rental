@@ -25,6 +25,14 @@ public class rentprocess extends javax.swing.JFrame {
     
     public rentprocess() {
         initComponents();
+        
+        config conf = new config();
+        conf.manageHover(logout);
+        conf.manageHover(managerent);
+        conf.manageHover(managepay);
+        conf.manageHover(managepay1);
+        conf.manageHover(managedress);
+        conf.manageHover(home);
          session sess = session.getInstance();
     this.dressId = sess.getDressId();
     this.dressName = sess.getDressName();
@@ -69,8 +77,8 @@ public class rentprocess extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         logout = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -261,9 +269,6 @@ public class rentprocess extends javax.swing.JFrame {
 
         logout.setBackground(new java.awt.Color(165, 42, 42));
         logout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoutMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logoutMouseEntered(evt);
             }
@@ -272,6 +277,9 @@ public class rentprocess extends javax.swing.JFrame {
             }
         });
         logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
+        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(240, 240, 240));
@@ -282,9 +290,6 @@ public class rentprocess extends javax.swing.JFrame {
             }
         });
         logout.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
-
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
-        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
 
@@ -570,8 +575,6 @@ public class rentprocess extends javax.swing.JFrame {
 
         jPanel2.add(logout3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 130, 40));
         jPanel2.add(dress_image, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 230, 160));
-
-        rentDateChooser.setDateFormatString("yyyy-MM-dd");
         jPanel2.add(rentDateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 330, 150, -1));
         jPanel2.add(returnDateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 330, 150, -1));
 
@@ -680,18 +683,6 @@ public class rentprocess extends javax.swing.JFrame {
     private void managepay1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay1MouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_managepay1MouseExited
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        staff_dashboard dash = new staff_dashboard();
-        dash.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel7MouseClicked
-
-    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        staff_dashboard land = new staff_dashboard();
-        land.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
         // logout.setBackground(new Color (255,255,255));
@@ -820,6 +811,8 @@ public class rentprocess extends javax.swing.JFrame {
     config conf = new config();
     session sess = session.getInstance();
     
+    String status = "Paid";
+    
     int staffId = sess.getUserId();
     String customerName = txt_custName.getText().trim();
     String customerPhone = txt_custContact.getText().trim();
@@ -836,13 +829,19 @@ public class rentprocess extends javax.swing.JFrame {
     String rDate = sdf.format(rentDateChooser.getDate());
     String retDate = sdf.format(returnDateChooser.getDate());
 
-    boolean success = conf.executeRentalTransaction(this.dressId, staffId, this.dressPrice, rDate, retDate, userNotes, customerName, customerPhone, transactionDate);
-
+    boolean success = conf.executeRentalTransaction(
+        this.dressId, staffId, this.dressPrice, rDate, retDate, 
+        userNotes, customerName, customerPhone, transactionDate, status
+    );
+    
     if (success) {
-        JOptionPane.showMessageDialog(null, "Booking Successful!");
+        JOptionPane.showMessageDialog(null, "Booking and Payment Successful!");
         
         config.printReceipt(customerName, customerPhone, dressName, 
                         String.valueOf(dressPrice), rDate, retDate);
+        
+        String updateDress = "UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = '" + dressId + "'";
+        conf.updateRecord(updateDress);
         
         /*config.printReceipt(
             txt_custName.getText(), 
@@ -911,6 +910,12 @@ public class rentprocess extends javax.swing.JFrame {
     private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
 
     }//GEN-LAST:event_customersMouseEntered
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        staff_dashboard dash = new staff_dashboard();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel7MouseClicked
 
     /**
      * @param args the command line arguments

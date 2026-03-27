@@ -8,6 +8,10 @@ package b_Admin;
 
 import javax.swing.JOptionPane;
 import a_Main.landingpage;
+import a_Main.login;
+import config.config;
+import config.session;
+import java.sql.ResultSet;
 
 /**
  *
@@ -18,7 +22,61 @@ public class admin_dash extends javax.swing.JFrame {
     /** Creates new form usersTable1 */
     public admin_dash() {
         initComponents();
+        displayTotals();
+        config conf = new config();
+    conf.manageHover(managedress);
+    conf.manageHover(managerent);
+    conf.manageHover(managepay);
+    conf.manageHover(manageusers);
+    conf.manageHover(logout);
+    conf.manageHover(logout2);
+    conf.manageHover(logout1);
+        
+        if(!session.getUserRole().equals("Admin")){
+            JOptionPane.showMessageDialog(null, "Access Denied!");
+            new login().setVisible(true);
+            this.dispose();
+            totalUsersLabel.setText("" + conf.getCount("SELECT COUNT(*) FROM Users"));
+        }
     }
+    public void displayTotals() {
+    config conf = new config();
+    try {
+        // 1. Total Dress (All dresses in inventory)
+        ResultSet rs1 = conf.getData("SELECT COUNT(*) FROM tbl_dresses");
+        if(rs1.next()) totalDressLabel.setText("" + rs1.getInt(1));
+
+        // 2. Total Rentals (Grand total of all transactions ever made)
+        ResultSet rs2 = conf.getData("SELECT COUNT(*) FROM tbl_rentals");
+        if(rs2.next()) totalRentalsLabel.setText("" + rs2.getInt(1));
+
+        // 3. Rented Dresses (Items currently out of the shop - 'Out')
+        ResultSet rs3 = conf.getData("SELECT COUNT(*) FROM tbl_rentals WHERE r_status = 'Pending'");
+        if(rs3.next()) rentedDressesLabel.setText("" + rs3.getInt(1));
+
+        // 4. Total Users (All registered staff/admins)
+        ResultSet rs4 = conf.getData("SELECT COUNT(*) FROM Users");
+        if(rs4.next()) totalUsersLabel.setText("" + rs4.getInt(1));
+
+        // 5. Active Rentals (Rentals that are Paid but not yet returned)
+        ResultSet rs5 = conf.getData("SELECT COUNT(*) FROM tbl_rentals WHERE r_status = 'Paid'");
+        if(rs5.next()) activeRentalsLabel.setText("" + rs5.getInt(1));
+
+        // 6. Total Earnings (Sum of all prices from paid rentals)
+        // This joins rentals with dresses to get the price of each rented item
+        String earningsSQL = "SELECT SUM(d.d_price) FROM tbl_rentals r "
+                           + "JOIN tbl_dresses d ON r.d_id = d.d_id "
+                           + "WHERE r.r_status = 'Paid' OR r.r_status = 'Returned'";
+        ResultSet rs6 = conf.getData(earningsSQL);
+        if(rs6.next()) {
+            double total = rs6.getDouble(1);
+            totalEarningsLabel.setText("P " + String.format("%.2f", total));
+        }
+
+    } catch (Exception e) {
+        System.out.println("Dashboard Error: " + e.getMessage());
+    }
+}
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -34,8 +92,8 @@ public class admin_dash extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         managepay = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         logout = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -55,21 +113,31 @@ public class admin_dash extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        totalDressLabel = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
+        totalRentalsLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
+        rentedDressesLabel = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
+        totalUsersLabel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        activeRentalsLabel = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
+        totalEarningsLabel = new javax.swing.JLabel();
+        logout1 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        logout2 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -100,6 +168,9 @@ public class admin_dash extends javax.swing.JFrame {
         });
         managepay.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
         jLabel6.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel6.setText("Payments");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -108,9 +179,6 @@ public class admin_dash extends javax.swing.JFrame {
             }
         });
         managepay.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
-        managepay.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
 
         jPanel10.add(managepay, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 150, 40));
 
@@ -273,6 +341,10 @@ public class admin_dash extends javax.swing.JFrame {
         jLabel14.setText("Total Dress");
         jPanel7.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
+        totalDressLabel.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        totalDressLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel7.add(totalDressLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 100, 30));
+
         jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 180, 100));
 
         jPanel5.setBackground(new java.awt.Color(255, 183, 201));
@@ -284,6 +356,10 @@ public class admin_dash extends javax.swing.JFrame {
 
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/available-removebg-preview.png"))); // NOI18N
         jPanel5.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 20, 70, 70));
+
+        totalRentalsLabel.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        totalRentalsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel5.add(totalRentalsLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 100, 30));
 
         jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 160, 100));
 
@@ -298,17 +374,26 @@ public class admin_dash extends javax.swing.JFrame {
         jLabel23.setText("Rented Dresses");
         jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
+        rentedDressesLabel.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        rentedDressesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel6.add(rentedDressesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 100, 30));
+
         jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 60, 170, 100));
 
         jPanel8.setBackground(new java.awt.Color(255, 183, 201));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel25.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        jLabel25.setText("Total Customers");
-        jPanel8.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel25.setText("Total Users");
+        jPanel8.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 180, -1));
 
         jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/customers-removebg-preview.png"))); // NOI18N
         jPanel8.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 20, 70, 60));
+
+        totalUsersLabel.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        totalUsersLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel8.add(totalUsersLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 100, 30));
 
         jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 180, 100));
 
@@ -322,6 +407,10 @@ public class admin_dash extends javax.swing.JFrame {
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/house-removebg-preview.png"))); // NOI18N
         jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 40, 60, 70));
 
+        activeRentalsLabel.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        activeRentalsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel4.add(activeRentalsLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 100, 30));
+
         jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 240, 160, 100));
 
         jPanel9.setBackground(new java.awt.Color(255, 183, 201));
@@ -334,7 +423,65 @@ public class admin_dash extends javax.swing.JFrame {
         jLabel29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/earnins-removebg-preview.png"))); // NOI18N
         jPanel9.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, -50, 100, 140));
 
+        totalEarningsLabel.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        totalEarningsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel9.add(totalEarningsLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 100, 30));
+
         jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 240, 170, 100));
+
+        logout1.setBackground(new java.awt.Color(46, 139, 8));
+        logout1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logout1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logout1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logout1MouseExited(evt);
+            }
+        });
+        logout1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel18.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel18.setText("Weekly Report");
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+        });
+        logout1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 160, 20));
+
+        jPanel2.add(logout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 360, 170, 40));
+
+        logout2.setBackground(new java.awt.Color(46, 139, 8));
+        logout2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logout2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logout2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logout2MouseExited(evt);
+            }
+        });
+        logout2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel24.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel24.setText("Payment History");
+        jLabel24.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel24MouseClicked(evt);
+            }
+        });
+        logout2.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 20));
+
+        jPanel2.add(logout2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 360, 180, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -351,9 +498,7 @@ public class admin_dash extends javax.swing.JFrame {
     }//GEN-LAST:event_managepayMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        landingpage land = new landingpage();
-        land.setVisible(true);
-        this.dispose();
+        new config().secureLogout(this);
     }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
@@ -429,9 +574,7 @@ public class admin_dash extends javax.swing.JFrame {
     }//GEN-LAST:event_homeMouseExited
 
     private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
-        transtable table = new transtable();
-        table.setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_jLabel34MouseEntered
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
@@ -454,10 +597,47 @@ public class admin_dash extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel34MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-       payments pay = new payments();
-       pay.setVisible(true);
-       this.dispose();
+        payments pay = new payments();
+        pay.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void logout1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout1MouseClicked
+
+    private void logout1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout1MouseEntered
+
+    private void logout1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout1MouseExited
+
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+        config conf = new config();
+    double total = conf.getAggregate("SELECT SUM(r_total) FROM tbl_rentals WHERE r_status IN ('Paid', 'Returned') AND r_transaction_date >= date('now', '-7 days')");
+    
+    javax.swing.JOptionPane.showMessageDialog(this, "Total Profit (Last 7 Days): P" + total);
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel24MouseClicked
+        history hist = new history(); 
+    hist.setVisible(true);       
+    this.dispose();
+    }//GEN-LAST:event_jLabel24MouseClicked
+
+    private void logout2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseClicked
+
+    private void logout2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseEntered
+
+    private void logout2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logout2MouseExited
 
     /**
      * @param args the command line arguments
@@ -498,6 +678,7 @@ public class admin_dash extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel activeRentalsLabel;
     private javax.swing.JLabel dashboard;
     private javax.swing.JPanel home;
     private javax.swing.JLabel jLabel1;
@@ -509,12 +690,14 @@ public class admin_dash extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
@@ -535,10 +718,17 @@ public class admin_dash extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel logout;
+    private javax.swing.JPanel logout1;
+    private javax.swing.JPanel logout2;
     private javax.swing.JPanel managedress;
     private javax.swing.JPanel managepay;
     private javax.swing.JPanel managerent;
     private javax.swing.JPanel manageusers;
+    private javax.swing.JLabel rentedDressesLabel;
+    private javax.swing.JLabel totalDressLabel;
+    private javax.swing.JLabel totalEarningsLabel;
+    private javax.swing.JLabel totalRentalsLabel;
+    private javax.swing.JLabel totalUsersLabel;
     // End of variables declaration//GEN-END:variables
 
 }

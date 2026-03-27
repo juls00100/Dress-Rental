@@ -6,6 +6,7 @@
 package c_Staff;
 
 import a_Main.landingpage;
+import config.config;
 
 /**
  *
@@ -19,6 +20,15 @@ public class staff_dashboard extends javax.swing.JFrame {
     public staff_dashboard() {
         initComponents();
         updateDashboardStats();
+        
+        config conf = new config();
+        conf.manageHover(logout);
+        conf.manageHover(managerent);
+        conf.manageHover(managepay);
+        conf.manageHover(managepay1);
+        conf.manageHover(managedress);
+        conf.manageHover(home);
+        
     }
     public void updateDashboardStats() {
     // This counts UNIQUE names from your rentals table
@@ -26,7 +36,7 @@ public class staff_dashboard extends javax.swing.JFrame {
     String countTotalDresses = "SELECT COUNT(*) FROM tbl_dresses";
     String countAvailable = "SELECT COUNT(*) FROM tbl_dresses WHERE d_status = 'Available'";
 
-    try (java.sql.Connection conn = config.config.connectDB()) {
+    try (java.sql.Connection conn = config.connectDB()) {
         if (conn != null) {
             // 1. Unique Customers from Rentals
             try (java.sql.PreparedStatement pst = conn.prepareStatement(countUniqueCustomers);
@@ -232,12 +242,6 @@ public class staff_dashboard extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 homeMouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                homeMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                homeMouseExited(evt);
-            }
         });
         home.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -358,9 +362,7 @@ public class staff_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_managepayMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        landingpage land = new landingpage();
-        land.setVisible(true);
-        this.dispose();
+        new config().secureLogout(this);
     }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
@@ -426,14 +428,6 @@ public class staff_dashboard extends javax.swing.JFrame {
         dash.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_homeMouseClicked
-
-    private void homeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseEntered
-        //  home.setBackground(new Color (255,255,255));
-    }//GEN-LAST:event_homeMouseEntered
-
-    private void homeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseExited
-        //home.setBackground(new Color (255,153,255));
-    }//GEN-LAST:event_homeMouseExited
 
     private void managepay1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managepay1MouseEntered
         // TODO add your handling code here:

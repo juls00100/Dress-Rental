@@ -5,18 +5,73 @@
  */
 package b_Admin;
 
+import config.config;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.Component;
+import java.awt.Color;
+import javax.swing.JTable;
+
+class StatusColorRenderer extends DefaultTableCellRenderer {
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        
+        // Get the value of the status column (usually column 3 or 5 depending on your SQL)
+        String status = table.getValueAt(row, table.getColumnCount()-1).toString();
+
+        if ("Pending".equalsIgnoreCase(status)) {
+            c.setForeground(Color.RED); // Red text for Pending
+        } else if ("Paid".equalsIgnoreCase(status)) {
+            c.setForeground(new Color(0, 153, 0)); // Dark Green for Paid
+        } else {
+            c.setForeground(Color.BLACK); // Default for others
+        }
+        
+        // Keep the selection color visible
+        if (isSelected) {
+            c.setBackground(table.getSelectionBackground());
+        } else {
+            c.setBackground(table.getBackground());
+        }
+
+        return c;
+    }
+}
+
 /**
  *
  * @author juls
  */
 public class payments extends javax.swing.JFrame {
 
-    /**
-     * Creates new form payments
-     */
+    config conf = new config();
+    
     public payments() {
         initComponents();
+        displayPayments();
+        config conf = new config();
+    conf.manageHover(managedress);
+    conf.manageHover(managerent);
+    conf.manageHover(managepay);
+    conf.manageHover(manageusers);
+    conf.manageHover(logout);
+    conf.manageHover(print);
+    conf.manageHover(print1);
+    
+    
+        for (int i = 0; i < payment_tbl.getColumnCount(); i++) {
+        payment_tbl.getColumnModel().getColumn(i).setCellRenderer(new StatusColorRenderer());
     }
+    }
+    
+    
+    public void displayPayments() {
+    // This query shows who owes money and for which dress
+   String sql = "SELECT r.r_id AS 'ID', r.r_cust_name AS 'CUSTOMER', d.d_name AS 'DRESS', r.r_date AS 'DATE', r.r_status AS 'STATUS' FROM tbl_rentals r JOIN tbl_dresses d ON r.d_id = d.d_id";
+    conf.displayData(sql, payment_tbl);
+   config.styleTable(payment_tbl);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,21 +82,394 @@ public class payments extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        managepay = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        managerent = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        manageusers = new javax.swing.JPanel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        managedress = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        home = new javax.swing.JPanel();
+        dashboard = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        logout = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        payment_tbl = new javax.swing.JTable();
+        print = new javax.swing.JPanel();
+        RETURN = new javax.swing.JLabel();
+        print1 = new javax.swing.JPanel();
+        PAY = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel2.setBackground(new java.awt.Color(255, 209, 220));
+        jPanel2.setPreferredSize(new java.awt.Dimension(360, 480));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 51, 153));
+        jLabel2.setText("Admin Dashboard  ");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, 20));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DressRent__6_-removebg-preview.png"))); // NOI18N
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-160, 0, 220, 190));
+
+        jPanel10.setBackground(new java.awt.Color(255, 235, 239));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        managepay.setBackground(new java.awt.Color(255, 209, 220));
+        managepay.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/payments.png"))); // NOI18N
+        managepay.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jLabel6.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel6.setText("Payments");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
+        managepay.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jPanel10.add(managepay, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 160, 40));
+
+        managerent.setBackground(new java.awt.Color(255, 183, 201));
+        managerent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                managerentMouseClicked(evt);
+            }
+        });
+        managerent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel34.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel34.setText("Rentals");
+        jLabel34.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel34MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel34MouseEntered(evt);
+            }
+        });
+        managerent.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/dressRent-removebg-preview.png"))); // NOI18N
+        managerent.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel10.add(managerent, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
+
+        manageusers.setBackground(new java.awt.Color(255, 183, 201));
+        manageusers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                manageusersMouseClicked(evt);
+            }
+        });
+        manageusers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel28.setText("Manage Rentals");
+        jLabel28.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel28MouseClicked(evt);
+            }
+        });
+        manageusers.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel4.setText("Users");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        manageusers.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/users-removebg-preview.png"))); // NOI18N
+        manageusers.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel10.add(manageusers, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 150, 40));
+
+        managedress.setBackground(new java.awt.Color(255, 183, 201));
+        managedress.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                managedressMouseClicked(evt);
+            }
+        });
+        managedress.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel10.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel10.setText("Dress");
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
+        managedress.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 70, -1));
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/manangedress-removebg-preview.png"))); // NOI18N
+        managedress.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel10.add(managedress, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 150, 40));
+
+        home.setBackground(new java.awt.Color(255, 183, 201));
+        home.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                homeMouseClicked(evt);
+            }
+        });
+        home.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dashboard.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        dashboard.setText("Dashboard");
+        dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashboardMouseClicked(evt);
+            }
+        });
+        home.add(dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 100, 40));
+
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home-removebg-preview.png"))); // NOI18N
+        home.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel10.add(home, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 150, 40));
+
+        logout.setBackground(new java.awt.Color(165, 42, 42));
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+        });
+        logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel7.setText("Back");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
+        logout.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
+        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
+
+        jPanel2.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 420));
+
+        payment_tbl.setBackground(new java.awt.Color(255, 204, 255));
+        payment_tbl.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(payment_tbl);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 530, 260));
+
+        print.setBackground(new java.awt.Color(165, 42, 42));
+
+        RETURN.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        RETURN.setForeground(new java.awt.Color(240, 240, 240));
+        RETURN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        RETURN.setText("RETURN");
+        RETURN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RETURNMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout printLayout = new javax.swing.GroupLayout(print);
+        print.setLayout(printLayout);
+        printLayout.setHorizontalGroup(
+            printLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(RETURN, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        printLayout.setVerticalGroup(
+            printLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(RETURN, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
+
+        jPanel2.add(print, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 340, 110, 30));
+
+        print1.setBackground(new java.awt.Color(46, 139, 8));
+
+        PAY.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        PAY.setForeground(new java.awt.Color(240, 240, 240));
+        PAY.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        PAY.setText("PAY");
+        PAY.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PAYMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout print1Layout = new javax.swing.GroupLayout(print1);
+        print1.setLayout(print1Layout);
+        print1Layout.setHorizontalGroup(
+            print1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(PAY, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+        );
+        print1Layout.setVerticalGroup(
+            print1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(PAY, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(print1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 340, 110, 30));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        payments pay = new payments();
+        pay.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
+        rentals rent = new rentals();
+        rent.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel34MouseClicked
+
+    private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
+
+    }//GEN-LAST:event_jLabel34MouseEntered
+
+    private void managerentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managerentMouseClicked
+        //transtable table = new transtable();
+        // table.setVisible(true);
+        //this.dispose();
+    }//GEN-LAST:event_managerentMouseClicked
+
+    private void jLabel28MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel28MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel28MouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        manageuser user = new manageuser();
+        user.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void manageusersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageusersMouseClicked
+
+    }//GEN-LAST:event_manageusersMouseClicked
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+
+        alldress dress = new alldress();
+        dress.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel10MouseClicked
+
+    private void managedressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managedressMouseClicked
+        //adddress dress = new adddress();
+        //dress.setVisible(true);
+        //this.dispose();
+    }//GEN-LAST:event_managedressMouseClicked
+
+    private void dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseClicked
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_dashboardMouseClicked
+
+    private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_homeMouseClicked
+
+    private void RETURNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RETURNMouseClicked
+    int row = payment_tbl.getSelectedRow();
+    
+    if (row == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select the rental to return!");
+        return;
+    }
+
+    // 1. Get IDs from your JTable
+    String r_id = payment_tbl.getValueAt(row, 0).toString(); // Rental ID
+    
+    // We need to find the Dress ID linked to this rental to make it available again
+    config conf = new config();
+    try {
+        String findDress = "SELECT d_id FROM tbl_rentals WHERE r_id = '" + r_id + "'";
+        java.sql.ResultSet rs = conf.getData(findDress);
+        
+        if (rs.next()) {
+            String d_id = rs.getString("d_id");
+
+            // 2. Update Rental Status
+            String sqlRental = "UPDATE tbl_rentals SET status = 'Returned' WHERE r_id = '" + r_id + "'";
+            conf.updateRecord(sqlRental);
+
+            // 3. Update Dress Availability in tbl_dresses
+            String sqlDress = "UPDATE tbl_dresses SET d_status = 'Available' WHERE d_id = '" + d_id + "'";
+            conf.updateRecord(sqlDress);
+
+            javax.swing.JOptionPane.showMessageDialog(this, "Dress Returned! Inventory Updated.");
+            displayPayments(); // Refresh the table
+        }
+    } catch (Exception e) {
+        System.out.println("Return Error: " + e.getMessage());
+    }
+
+    }//GEN-LAST:event_RETURNMouseClicked
+
+    private void PAYMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PAYMouseClicked
+        int row = payment_tbl.getSelectedRow();
+    
+    if (row == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a rental from the table!");
+        return;
+    }
+
+    // Get ID from the first column of your table
+    String selectedID = payment_tbl.getValueAt(row, 0).toString();
+    
+    // The SQL Update
+    String sql = "UPDATE tbl_rentals SET status = 'Paid' WHERE r_id = '" + selectedID + "'";
+
+    config conf = new config();
+    conf.updateRecord(sql); 
+    
+    // Refresh the view
+    displayPayments(); 
+    javax.swing.JOptionPane.showMessageDialog(this, "Transaction " + selectedID + " is now PAID.");
+
+    }//GEN-LAST:event_PAYMouseClicked
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        admin_dash dash = new admin_dash();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_logoutMouseClicked
 
     /**
      * @param args the command line arguments
@@ -79,5 +507,34 @@ public class payments extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel PAY;
+    private javax.swing.JLabel RETURN;
+    private javax.swing.JLabel dashboard;
+    private javax.swing.JPanel home;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel logout;
+    private javax.swing.JPanel managedress;
+    private javax.swing.JPanel managepay;
+    private javax.swing.JPanel managerent;
+    private javax.swing.JPanel manageusers;
+    private javax.swing.JTable payment_tbl;
+    private javax.swing.JPanel print;
+    private javax.swing.JPanel print1;
     // End of variables declaration//GEN-END:variables
 }

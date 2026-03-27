@@ -22,6 +22,7 @@ public static Connection connectDB() {
 
 
     public int addRecord(String sql, Object... values) {
+    int rowsInserted = 0;
     try (Connection conn = config.connectDB();
 
          PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -49,12 +50,12 @@ public static Connection connectDB() {
             }
         }
 
-        pstmt.executeUpdate();
+        rowsInserted = pstmt.executeUpdate();
         System.out.println("Record added successfully!");
     } catch (SQLException e) {
         System.out.println("Error adding record: " + e.getMessage());
     }
-    return 0;
+    return rowsInserted;
 }
 // Dynamic view method to display records from any table
     public void viewRecords(String sqlQuery, String[] columnHeaders, String[] columnNames) {
@@ -359,7 +360,6 @@ public static class session {
     }
 }
     public static void styleTable(JTable table) {
-    // 1. Header Design
     table.getTableHeader().setFont(new java.awt.Font("Georgia", java.awt.Font.BOLD, 14));
     table.getTableHeader().setOpaque(true);
     table.getTableHeader().setBackground(new java.awt.Color(52, 73, 94)); // Dark Blue/Gray
@@ -371,7 +371,6 @@ public static class session {
     table.setSelectionBackground(new java.awt.Color(41, 128, 185)); // Lighter Blue when clicked
     table.setSelectionForeground(java.awt.Color.WHITE);
     
-    // 3. Grid & Background
     table.setShowGrid(true);
     table.setGridColor(new java.awt.Color(230, 230, 230));
     table.setBackground(java.awt.Color.PINK);
@@ -422,7 +421,6 @@ public static class session {
     javax.swing.JTextArea receiptArea = new javax.swing.JTextArea();
     receiptArea.setText(receiptText);
     
-    // We use BOLD for the whole text but the # box makes the period pop
     receiptArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.BOLD, 9));
 
     try {
@@ -443,6 +441,146 @@ public static class session {
     } catch (SQLException e) {
         System.out.println("Update Error: " + e);
     }
-    return rowsUpdated; // This returns 1 if successful, 0 if it failed
+    return rowsUpdated; }
+    public int getCount(String sql) {
+    int count = 0;
+    try (Connection conn = connectDB(); 
+         Statement stmt = conn.createStatement(); 
+         ResultSet rs = stmt.executeQuery(sql)) {
+        if (rs.next()) {
+            count = rs.getInt(1);
+        }
+    } catch (SQLException e) { System.out.println(e); }
+    return count;
+}
+public int updateRecordWithValues(String sql, Object... values) {
+    int rowsUpdated = 0;
+    try (Connection conn = config.connectDB(); 
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        for (int i = 0; i < values.length; i++) {
+            pstmt.setObject(i + 1, values[i]);
+        }
+        
+        rowsUpdated = pstmt.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println("Update Error: " + e.getMessage());
+    }
+    return rowsUpdated; 
+}
+public boolean executeRentalTransaction(String d_id, int u_id, double price, String rdate, String redate, String notes, String cname, String ccontact, String tdate, String status) {
+    String sql = "INSERT INTO tbl_rentals (d_id, u_id, r_total, r_date, r_return, r_notes, r_cust_name, r_cust_contact, r_transaction_date, r_status) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    try (Connection conn = connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setString(1, d_id);
+        pstmt.setInt(2, u_id);
+        pstmt.setDouble(3, price);
+        pstmt.setString(4, rdate);
+        pstmt.setString(5, redate);
+        pstmt.setString(6, notes);
+        pstmt.setString(7, cname);
+        pstmt.setString(8, ccontact);
+        pstmt.setString(9, tdate);
+        pstmt.setString(10, status);
+        
+        int rows = pstmt.executeUpdate();
+        
+        if (rows > 0) { String updateDress = "UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = ?";
+            try (PreparedStatement pstmtDress = conn.prepareStatement(updateDress)) {
+                pstmtDress.setString(1, d_id);
+                pstmtDress.executeUpdate();
+            }
+            return true;
+        }
+    } catch (SQLException e) {
+        System.out.println("Rental Error: " + e.getMessage());
+    }
+    return false;
+}
+    public double getAggregate(String sql) {
+        try (java.sql.Connection conn = connectDB();
+             java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+             java.sql.ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) { return rs.getDouble(1); }
+        } catch (java.sql.SQLException e) { System.out.println("Error: " + e.getMessage()); }
+        return 0;
+    }
+    public static void manageHover(javax.swing.JPanel panel) {
+    try {
+        // 1. Remember the color the panel had at the very start
+        java.awt.Color originalColor = panel.getBackground();
+        
+        // 2. Define your highlight color (A nice Dark Blue to match a professional UI)
+        java.awt.Color hoverColor = new java.awt.Color(0, 51, 102); 
+
+        java.awt.event.MouseAdapter hoverEffect = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel.setBackground(hoverColor);
+                panel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                // 3. Return to the EXACT color it had before
+                panel.setBackground(originalColor);
+            }
+        };
+
+        // Apply to the panel itself
+        panel.addMouseListener(hoverEffect);
+
+        // Apply to every Label/Icon inside so the text doesn't "block" the hover
+        for (java.awt.Component comp : panel.getComponents()) {
+            comp.addMouseListener(hoverEffect);
+        }
+    } catch (Exception e) {
+        System.out.println("Hover Error: " + e.getMessage());
+    }
+    
+}
+    // Inside your config.java
+public static void applyProHover(javax.swing.JPanel panel) {
+    panel.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent e) {
+            panel.setBackground(new java.awt.Color(60, 63, 65)); // Your Pro Color
+            // add shadows, borders, etc.
+        }
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent e) {
+            panel.setBackground(new java.awt.Color(45, 45, 45)); // Original Color
+        }
+    });
+}
+    public void secureLogout(javax.swing.JFrame currentFrame) {
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(
+            currentFrame, 
+            "Are you sure you want to log out?", 
+            "Logout Confirmation", 
+            javax.swing.JOptionPane.YES_NO_OPTION, 
+            javax.swing.JOptionPane.QUESTION_MESSAGE
+    );
+
+    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+        try {
+            a_Main.landingpage land = new a_Main.landingpage();
+            land.setVisible(true);
+
+            currentFrame.dispose();
+            
+            System.out.println("Logout Clean: Frame disposed.");
+        } catch (Exception e) {
+            System.out.println("Logout Error: " + e.getMessage());
+            currentFrame.dispose();
+        } finally {
+            System.gc();
+        }
+        
+        
+    }
 }
 }

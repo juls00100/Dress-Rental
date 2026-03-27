@@ -64,6 +64,14 @@ public alldress(String mode) {
     public alldress() {
         this("Available");
         initComponents();
+        
+        config conf = new config();
+        conf.manageHover(logout);
+        conf.manageHover(managerent);
+        conf.manageHover(managepay);
+        conf.manageHover(managepay1);
+        conf.manageHover(managedress);
+        conf.manageHover(home);
 
 
         session sess = session.getInstance();
@@ -531,8 +539,8 @@ public alldress(String mode) {
     }//GEN-LAST:event_managepay1MouseExited
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        dressMenu dm = new dressMenu();
-        dm.setVisible(true);
+        staff_dashboard dash = new staff_dashboard();
+        dash.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 

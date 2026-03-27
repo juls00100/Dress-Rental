@@ -25,6 +25,10 @@ public class login extends javax.swing.JFrame {
      */
     public login() {
         initComponents();
+        config conf = new config();
+        conf.manageHover(jPanel4);
+        conf.manageHover(jPanel3);
+        conf.manageHover(jPanel5);
     }
 
     /**

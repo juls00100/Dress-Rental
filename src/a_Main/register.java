@@ -24,6 +24,10 @@ public class register extends javax.swing.JFrame {
      */
     public register() {
         initComponents();
+        config conf = new config();
+        conf.manageHover(jPanel6);
+        conf.manageHover(jPanel3);
+        conf.manageHover(jPanel4);
     }
 
     /**
@@ -233,31 +237,21 @@ public class register extends javax.swing.JFrame {
     }//GEN-LAST:event_emailActionPerformed
 
     private void registerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerMouseClicked
-
         if (full_name.getText().trim().isEmpty() ||
         email.getText().trim().isEmpty() ||     
         number.getText().trim().isEmpty() ||
         address.getText().trim().isEmpty() ||
         password.getText().trim().isEmpty())
-        
-        
         {
- 
         JOptionPane.showMessageDialog(null, "Please fill in all fields!");
         return;
-        
     }
-        
         String userPass = password.getText();
-
         String hashedPass = hashPassword(userPass);
-
         config con = new config();
         String sql = "INSERT INTO Users (full_name, email, number, address, password, role , status)VALUES(?,?,?,?,?,?,?)";
        
         con.addRecord(sql,full_name.getText(), email.getText(),number.getText() ,address.getText(), hashedPass, "Staff", "pending");
-
-        
         JOptionPane.showMessageDialog(null, "Successfully Registered!");
 
     full_name.setText("");

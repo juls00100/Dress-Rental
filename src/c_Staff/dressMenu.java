@@ -19,6 +19,14 @@ public class dressMenu extends javax.swing.JFrame {
     public dressMenu() {
         initComponents();
         updateCounts();
+        
+        config conf = new config();
+        conf.manageHover(logout);
+        conf.manageHover(managerent);
+        conf.manageHover(managepay);
+        conf.manageHover(managepay1);
+        conf.manageHover(managedress);
+        conf.manageHover(home);
     }
     
     public void updateCounts() {
@@ -59,8 +67,8 @@ public class dressMenu extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         logout = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         managerent = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         customers = new javax.swing.JLabel();
@@ -127,9 +135,6 @@ public class dressMenu extends javax.swing.JFrame {
 
         logout.setBackground(new java.awt.Color(165, 42, 42));
         logout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoutMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logoutMouseEntered(evt);
             }
@@ -138,6 +143,9 @@ public class dressMenu extends javax.swing.JFrame {
             }
         });
         logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
+        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(240, 240, 240));
@@ -148,9 +156,6 @@ public class dressMenu extends javax.swing.JFrame {
             }
         });
         logout.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 9, -1, 20));
-
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logout-removebg-preview (1).png"))); // NOI18N
-        logout.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jPanel10.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 40));
 
@@ -334,12 +339,6 @@ public class dressMenu extends javax.swing.JFrame {
         // managepay.setBackground(new Color (255,153,255));
     }//GEN-LAST:event_managepayMouseExited
 
-    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        landingpage land = new landingpage();
-        land.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_logoutMouseClicked
-
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
         // logout.setBackground(new Color (255,255,255));
     }//GEN-LAST:event_logoutMouseEntered
@@ -410,12 +409,6 @@ public class dressMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_managepay1MouseExited
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        staff_dashboard dash = new staff_dashboard();
-        dash.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel7MouseClicked
-
     private void availableCountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availableCountMouseClicked
         alldress availableList = new alldress("Available");
     availableList.setVisible(true);
@@ -443,6 +436,12 @@ public class dressMenu extends javax.swing.JFrame {
     private void customersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customersMouseEntered
 
     }//GEN-LAST:event_customersMouseEntered
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        staff_dashboard dash = new staff_dashboard();
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel7MouseClicked
 
     /**
      * @param args the command line arguments

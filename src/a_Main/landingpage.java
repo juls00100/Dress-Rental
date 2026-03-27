@@ -1,5 +1,7 @@
 package a_Main;
 
+import config.config;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,6 +19,9 @@ public class landingpage extends javax.swing.JFrame {
      */
     public landingpage() {
         initComponents();
+        config conf = new config();
+        conf.manageHover(jPanel2);
+        conf.manageHover(jPanel3);
     }
 
     /**
