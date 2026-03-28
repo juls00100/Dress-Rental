@@ -807,54 +807,77 @@ public class rentprocess extends javax.swing.JFrame {
     }//GEN-LAST:event_notesActionPerformed
 
     private void confirmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmMouseClicked
-                                                                           
     config conf = new config();
     session sess = session.getInstance();
     
-    String status = "Paid";
-    
+    // 1. Setup Variables from Form
     int staffId = sess.getUserId();
     String customerName = txt_custName.getText().trim();
     String customerPhone = txt_custContact.getText().trim();
     String userNotes = notes.getText().trim();
     
-
+    // Validation
     if (rentDateChooser.getDate() == null || returnDateChooser.getDate() == null || customerName.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Please fill in all details and select dates!");
         return;
     }
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    String transactionDate = sdf.format(new java.util.Date());
-    String rDate = sdf.format(rentDateChooser.getDate());
-    String retDate = sdf.format(returnDateChooser.getDate());
+    String transactionDate = sdf.format(new java.util.Date()); // For tbl_payments
+    String rDate = sdf.format(rentDateChooser.getDate());      // For tbl_rentals start
+    String retDate = sdf.format(returnDateChooser.getDate());  // For tbl_rentals end
 
-    boolean success = conf.executeRentalTransaction(
-        this.dressId, staffId, this.dressPrice, rDate, retDate, 
-        userNotes, customerName, customerPhone, transactionDate, status
-    );
+// 1. Prepare the SQL with ALL columns found in your tbl_rentals
+String rentSQL = "INSERT INTO tbl_rentals ("
+        + "u_id, d_id, r_total, r_date, r_return, r_notes, "
+        + "r_status, r_cust_name, r_cust_contact, r_transaction_date"
+        + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+// 2. Pass the data in the EXACT same order as the columns above
+int rid = conf.addRecord(rentSQL, 
+    staffId,               // u_id
+    this.dressId,          // d_id
+    this.dressPrice,       // r_total
+    rDate,                 // r_date
+    retDate,               // r_return
+    userNotes,             // r_notes
+    "Paid",                // r_status
+    customerName,          // r_cust_name
+    customerPhone,         // r_cust_contact
+    transactionDate        // r_transaction_date
+);
+
+if (rid > 0) {
+    // 3. Update the dress status
+    conf.updateRecord("UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = '" + dressId + "'");
+
+    // 4. Record the payment in tbl_payments
+    String paySQL = "INSERT INTO tbl_payments (r_id, p_amount, p_date, p_status) VALUES (?, ?, ?, ?)";
+    conf.addRecord(paySQL, rid, this.dressPrice, transactionDate, "Paid");
+
+    JOptionPane.showMessageDialog(null, "Booking and Payment Successful! No more NULLs!");
     
-    if (success) {
-        JOptionPane.showMessageDialog(null, "Booking and Payment Successful!");
-        
-        config.printReceipt(customerName, customerPhone, dressName, 
-                        String.valueOf(dressPrice), rDate, retDate);
-        
-        String updateDress = "UPDATE tbl_dresses SET d_status = 'Rented' WHERE d_id = '" + dressId + "'";
-        conf.updateRecord(updateDress);
-        
-        /*config.printReceipt(
-            txt_custName.getText(), 
-            txt_custContact.getText(), 
-            jLabel1.getText(), // Your Dress Name
+    // Receipt printing and navigation...
+    this.dispose();
+    new staff_dashboard().setVisible(true);
+
+        config.printReceipt(
+            customerName, 
+            customerPhone, 
+            jLabel1.getText(), // Dress Name Label
             String.valueOf(this.dressPrice), 
-            sdf.format(rentDateChooser.getDate()), 
-            sdf.format(returnDateChooser.getDate())
+            rDate, 
+            retDate
         );
-*/
+        
+        // Navigate back to dashboard
         this.dispose();
         new staff_dashboard().setVisible(true);
+        
+    } else {
+        JOptionPane.showMessageDialog(null, "Critical Error: Could not process rental.");
     }
+
     }//GEN-LAST:event_confirmMouseClicked
 
     private void logout2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout2MouseClicked

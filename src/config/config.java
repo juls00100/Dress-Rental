@@ -25,8 +25,7 @@ public static Connection connectDB() {
     int rowsInserted = 0;
     try (Connection conn = config.connectDB();
 
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+    PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
         // Loop through the values and set them in the prepared statement dynamically
         for (int i = 0; i < values.length; i++) {
             if (values[i] instanceof Integer) {
@@ -51,13 +50,15 @@ public static Connection connectDB() {
         }
 
         rowsInserted = pstmt.executeUpdate();
+        try (ResultSet rs = pstmt.getGeneratedKeys()) {
+            if (rs.next()) rowsInserted = rs.getInt(1); 
+        }
         System.out.println("Record added successfully!");
     } catch (SQLException e) {
         System.out.println("Error adding record: " + e.getMessage());
     }
     return rowsInserted;
 }
-// Dynamic view method to display records from any table
     public void viewRecords(String sqlQuery, String[] columnHeaders, String[] columnNames) {
         // Check that columnHeaders and columnNames arrays are the same length
         if (columnHeaders.length != columnNames.length) {
@@ -266,7 +267,7 @@ public static class session {
     private int userId;
     private String userName, userEmail, userStatus, userRole;
 
-    private session() {} // Private constructor
+    private session() {} 
 
     public static session getInstance() {
         if (instance == null) {
@@ -362,13 +363,12 @@ public static class session {
     public static void styleTable(JTable table) {
     table.getTableHeader().setFont(new java.awt.Font("Georgia", java.awt.Font.BOLD, 14));
     table.getTableHeader().setOpaque(true);
-    table.getTableHeader().setBackground(new java.awt.Color(52, 73, 94)); // Dark Blue/Gray
+    table.getTableHeader().setBackground(new java.awt.Color(52, 73, 94)); 
     table.getTableHeader().setForeground(new java.awt.Color(0,0,0)); 
     
-    // 2. Row Design
     table.setFont(new java.awt.Font("Georgia", java.awt.Font.PLAIN, 12));
     table.setRowHeight(30);
-    table.setSelectionBackground(new java.awt.Color(41, 128, 185)); // Lighter Blue when clicked
+    table.setSelectionBackground(new java.awt.Color(41, 128, 185)); 
     table.setSelectionForeground(java.awt.Color.WHITE);
     
     table.setShowGrid(true);
@@ -510,10 +510,8 @@ public boolean executeRentalTransaction(String d_id, int u_id, double price, Str
     }
     public static void manageHover(javax.swing.JPanel panel) {
     try {
-        // 1. Remember the color the panel had at the very start
         java.awt.Color originalColor = panel.getBackground();
         
-        // 2. Define your highlight color (A nice Dark Blue to match a professional UI)
         java.awt.Color hoverColor = new java.awt.Color(0, 51, 102); 
 
         java.awt.event.MouseAdapter hoverEffect = new java.awt.event.MouseAdapter() {
@@ -530,10 +528,8 @@ public boolean executeRentalTransaction(String d_id, int u_id, double price, Str
             }
         };
 
-        // Apply to the panel itself
         panel.addMouseListener(hoverEffect);
 
-        // Apply to every Label/Icon inside so the text doesn't "block" the hover
         for (java.awt.Component comp : panel.getComponents()) {
             comp.addMouseListener(hoverEffect);
         }
@@ -547,12 +543,12 @@ public static void applyProHover(javax.swing.JPanel panel) {
     panel.addMouseListener(new java.awt.event.MouseAdapter() {
         @Override
         public void mouseEntered(java.awt.event.MouseEvent e) {
-            panel.setBackground(new java.awt.Color(60, 63, 65)); // Your Pro Color
-            // add shadows, borders, etc.
+            panel.setBackground(new java.awt.Color(60, 63, 65)); 
+           
         }
         @Override
         public void mouseExited(java.awt.event.MouseEvent e) {
-            panel.setBackground(new java.awt.Color(45, 45, 45)); // Original Color
+            panel.setBackground(new java.awt.Color(45, 45, 45)); 
         }
     });
 }
@@ -581,6 +577,33 @@ public static void applyProHover(javax.swing.JPanel panel) {
         }
         
         
+    }
+}
+    public boolean duplicateCheck(String sql) {
+    try (Connection conn = connectDB();
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+            
+        return rs.next(); 
+        
+    } catch (SQLException e) {
+        System.out.println("Duplicate Check Error: " + e.getMessage());
+        return false;
+    }
+}
+    public boolean insertRecord(String sql, Object... values) {
+    try (Connection conn = connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        for (int i = 0; i < values.length; i++) {
+            pstmt.setObject(i + 1, values[i]);
+        }
+
+        int rowsAffected = pstmt.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        System.out.println("Insert Error: " + e.getMessage());
+        return false;
     }
 }
 }

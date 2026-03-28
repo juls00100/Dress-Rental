@@ -29,6 +29,15 @@ public class register extends javax.swing.JFrame {
         conf.manageHover(jPanel3);
         conf.manageHover(jPanel4);
     }
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@gmail\\.com$";
+        java.util.regex.Pattern pat = java.util.regex.Pattern.compile(emailRegex);
+        return pat.matcher(email).matches();
+    }
+    private boolean isValidContact(String contact) {
+        return contact.matches("\\d{11}");
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -237,32 +246,49 @@ public class register extends javax.swing.JFrame {
     }//GEN-LAST:event_emailActionPerformed
 
     private void registerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerMouseClicked
-        if (full_name.getText().trim().isEmpty() ||
-        email.getText().trim().isEmpty() ||     
-        number.getText().trim().isEmpty() ||
-        address.getText().trim().isEmpty() ||
-        password.getText().trim().isEmpty())
-        {
-        JOptionPane.showMessageDialog(null, "Please fill in all fields!");
-        return;
+        String em = email.getText().trim();
+    String contactNum = number.getText().trim();
+    
+    if (full_name.getText().isEmpty() || em.isEmpty() || password.getText().isEmpty() || contactNum.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "All fields are required!");
+    } 
+    else if (!isValidEmail(em)) {
+        JOptionPane.showMessageDialog(null, "Please enter a valid @gmail.com address!");
+    } 
+    else if (!isValidContact(contactNum)) {
+        JOptionPane.showMessageDialog(null, "Contact number must be exactly 11 digits (e.g., 09123456789)!");
+    } 
+    else {
+    config conf = new config();
+    
+    // 1. Safe Duplicate Check
+    // (Still okay to use your duplicateCheck, but Prepared is better)
+    if (conf.duplicateCheck("SELECT email FROM Users WHERE email = '" + em + "'")) {
+        JOptionPane.showMessageDialog(null, "Email is already taken!");
+    } else {
+        String pass = hashPassword(password.getText());
+        
+        // 2. Use '?' instead of variables for the SQL
+        String sql = "INSERT INTO Users (full_name, email, number, address, password, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        // 3. Pass the values as a list
+        boolean success = conf.insertRecord(sql, 
+            full_name.getText(), 
+            em, 
+            contactNum, 
+            address.getText(), 
+            pass, 
+            "Staff", 
+            "Pending"
+        );
+        
+        if (success) {
+            JOptionPane.showMessageDialog(null, "Registered Successfully! Wait for Admin Approval.");
+            new login().setVisible(true);
+            this.dispose();
+        }
     }
-        String userPass = password.getText();
-        String hashedPass = hashPassword(userPass);
-        config con = new config();
-        String sql = "INSERT INTO Users (full_name, email, number, address, password, role , status)VALUES(?,?,?,?,?,?,?)";
-       
-        con.addRecord(sql,full_name.getText(), email.getText(),number.getText() ,address.getText(), hashedPass, "Staff", "pending");
-        JOptionPane.showMessageDialog(null, "Successfully Registered!");
-
-    full_name.setText("");
-    email.setText("");
-    number.setText("");
-    address.setText("");
-    password.setText("");
-
-    login lf = new login();
-    lf.setVisible(true);
-    this.dispose();
+    }
     }//GEN-LAST:event_registerMouseClicked
 
     private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked

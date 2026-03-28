@@ -83,12 +83,11 @@ public class dressMenu extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
         rentedCount = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         availableCount = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
+        edit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -281,9 +280,6 @@ public class dressMenu extends javax.swing.JFrame {
         jLabel11.setText("ITEMS RENTED");
         jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 320, -1));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/house-removebg-preview.png"))); // NOI18N
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 40, 60, 70));
-
         rentedCount.setFont(new java.awt.Font("Georgia", 1, 24)); // NOI18N
         rentedCount.setForeground(new java.awt.Color(165, 42, 42));
         rentedCount.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -292,7 +288,7 @@ public class dressMenu extends javax.swing.JFrame {
                 rentedCountMouseClicked(evt);
             }
         });
-        jPanel4.add(rentedCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 320, 20));
+        jPanel4.add(rentedCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 320, 30));
 
         jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 240, 320, 100));
 
@@ -307,17 +303,24 @@ public class dressMenu extends javax.swing.JFrame {
                 availableCountMouseClicked(evt);
             }
         });
-        jPanel5.add(availableCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 320, 20));
-
-        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/house-removebg-preview.png"))); // NOI18N
-        jPanel5.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 40, 60, 70));
+        jPanel5.add(availableCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 320, 30));
 
         jLabel21.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel21.setText("ITEMS AVAILABLE");
         jPanel5.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 320, 20));
 
-        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 320, 100));
+        edit.setBackground(new java.awt.Color(255, 153, 153));
+        edit.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        edit.setText("RENT NOW");
+        edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editActionPerformed(evt);
+            }
+        });
+        jPanel5.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 140, -1));
+
+        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 320, 120));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -443,6 +446,12 @@ public class dressMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
+    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
+        alldress availableList = new alldress("Available");
+        availableList.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_editActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -482,16 +491,15 @@ public class dressMenu extends javax.swing.JFrame {
     private javax.swing.JLabel availableCount;
     private javax.swing.JLabel customers;
     private javax.swing.JLabel dashboard;
+    private javax.swing.JButton edit;
     private javax.swing.JPanel home;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;

@@ -86,6 +86,7 @@ public alldress(String mode) {
     conf.manageHover(logout1);
     conf.manageHover(logout);
     conf.manageHover(managepay);
+    conf.manageHover(print);
 
 
         session sess = session.getInstance();
@@ -211,6 +212,8 @@ public alldress(String mode) {
         dressContainerPanel = new javax.swing.JPanel();
         logout1 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
+        print = new javax.swing.JPanel();
+        RETURN = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -436,9 +439,34 @@ public alldress(String mode) {
                 jLabel18MouseClicked(evt);
             }
         });
-        logout1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 170, 20));
+        logout1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 30));
 
-        jPanel2.add(logout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 380, 170, 40));
+        jPanel2.add(logout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 360, 170, 30));
+
+        print.setBackground(new java.awt.Color(165, 42, 42));
+
+        RETURN.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
+        RETURN.setForeground(new java.awt.Color(240, 240, 240));
+        RETURN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        RETURN.setText("Return Dress");
+        RETURN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RETURNMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout printLayout = new javax.swing.GroupLayout(print);
+        print.setLayout(printLayout);
+        printLayout.setHorizontalGroup(
+            printLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(RETURN, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+        );
+        printLayout.setVerticalGroup(
+            printLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(RETURN, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(print, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 360, 160, 30));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
@@ -579,6 +607,12 @@ public alldress(String mode) {
         this.dispose();
     }//GEN-LAST:event_logoutMouseClicked
 
+    private void RETURNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RETURNMouseClicked
+        returndress rd = new returndress();
+        rd.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_RETURNMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -615,6 +649,7 @@ public alldress(String mode) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel RETURN;
     private javax.swing.JLabel dashboard;
     private javax.swing.JPanel dressContainerPanel;
     private javax.swing.JPanel home;
@@ -641,5 +676,6 @@ public alldress(String mode) {
     private javax.swing.JPanel managepay;
     private javax.swing.JPanel managerent;
     private javax.swing.JPanel manageusers;
+    private javax.swing.JPanel print;
     // End of variables declaration//GEN-END:variables
 }

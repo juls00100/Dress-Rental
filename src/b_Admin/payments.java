@@ -56,8 +56,6 @@ public class payments extends javax.swing.JFrame {
     conf.manageHover(managepay);
     conf.manageHover(manageusers);
     conf.manageHover(logout);
-    conf.manageHover(print);
-    conf.manageHover(print1);
     
     
         for (int i = 0; i < payment_tbl.getColumnCount(); i++) {
@@ -107,10 +105,6 @@ public class payments extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         payment_tbl = new javax.swing.JTable();
-        print = new javax.swing.JPanel();
-        RETURN = new javax.swing.JLabel();
-        print1 = new javax.swing.JPanel();
-        PAY = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -284,56 +278,6 @@ public class payments extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 530, 260));
 
-        print.setBackground(new java.awt.Color(165, 42, 42));
-
-        RETURN.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        RETURN.setForeground(new java.awt.Color(240, 240, 240));
-        RETURN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        RETURN.setText("RETURN");
-        RETURN.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                RETURNMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout printLayout = new javax.swing.GroupLayout(print);
-        print.setLayout(printLayout);
-        printLayout.setHorizontalGroup(
-            printLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(RETURN, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-        );
-        printLayout.setVerticalGroup(
-            printLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(RETURN, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-        );
-
-        jPanel2.add(print, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 340, 110, 30));
-
-        print1.setBackground(new java.awt.Color(46, 139, 8));
-
-        PAY.setFont(new java.awt.Font("Georgia", 1, 16)); // NOI18N
-        PAY.setForeground(new java.awt.Color(240, 240, 240));
-        PAY.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        PAY.setText("PAY");
-        PAY.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                PAYMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout print1Layout = new javax.swing.GroupLayout(print1);
-        print1.setLayout(print1Layout);
-        print1Layout.setHorizontalGroup(
-            print1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PAY, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-        );
-        print1Layout.setVerticalGroup(
-            print1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PAY, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-        );
-
-        jPanel2.add(print1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 340, 110, 30));
-
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 480));
 
         pack();
@@ -401,66 +345,6 @@ public class payments extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_homeMouseClicked
 
-    private void RETURNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RETURNMouseClicked
-    int row = payment_tbl.getSelectedRow();
-    
-    if (row == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please select the rental to return!");
-        return;
-    }
-
-    // 1. Get IDs from your JTable
-    String r_id = payment_tbl.getValueAt(row, 0).toString(); // Rental ID
-    
-    // We need to find the Dress ID linked to this rental to make it available again
-    config conf = new config();
-    try {
-        String findDress = "SELECT d_id FROM tbl_rentals WHERE r_id = '" + r_id + "'";
-        java.sql.ResultSet rs = conf.getData(findDress);
-        
-        if (rs.next()) {
-            String d_id = rs.getString("d_id");
-
-            // 2. Update Rental Status
-            String sqlRental = "UPDATE tbl_rentals SET status = 'Returned' WHERE r_id = '" + r_id + "'";
-            conf.updateRecord(sqlRental);
-
-            // 3. Update Dress Availability in tbl_dresses
-            String sqlDress = "UPDATE tbl_dresses SET d_status = 'Available' WHERE d_id = '" + d_id + "'";
-            conf.updateRecord(sqlDress);
-
-            javax.swing.JOptionPane.showMessageDialog(this, "Dress Returned! Inventory Updated.");
-            displayPayments(); // Refresh the table
-        }
-    } catch (Exception e) {
-        System.out.println("Return Error: " + e.getMessage());
-    }
-
-    }//GEN-LAST:event_RETURNMouseClicked
-
-    private void PAYMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PAYMouseClicked
-        int row = payment_tbl.getSelectedRow();
-    
-    if (row == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please select a rental from the table!");
-        return;
-    }
-
-    // Get ID from the first column of your table
-    String selectedID = payment_tbl.getValueAt(row, 0).toString();
-    
-    // The SQL Update
-    String sql = "UPDATE tbl_rentals SET status = 'Paid' WHERE r_id = '" + selectedID + "'";
-
-    config conf = new config();
-    conf.updateRecord(sql); 
-    
-    // Refresh the view
-    displayPayments(); 
-    javax.swing.JOptionPane.showMessageDialog(this, "Transaction " + selectedID + " is now PAID.");
-
-    }//GEN-LAST:event_PAYMouseClicked
-
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseClicked
@@ -507,8 +391,6 @@ public class payments extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel PAY;
-    private javax.swing.JLabel RETURN;
     private javax.swing.JLabel dashboard;
     private javax.swing.JPanel home;
     private javax.swing.JLabel jLabel1;
@@ -534,7 +416,5 @@ public class payments extends javax.swing.JFrame {
     private javax.swing.JPanel managerent;
     private javax.swing.JPanel manageusers;
     private javax.swing.JTable payment_tbl;
-    private javax.swing.JPanel print;
-    private javax.swing.JPanel print1;
     // End of variables declaration//GEN-END:variables
 }
